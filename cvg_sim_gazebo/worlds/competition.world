@@ -182,8 +182,8 @@
         </model>
 
 
-        <include filename="../models/compatition_start.model" model_name="compatition_start" model_pose="0 0 0.001 0 0 0.0" />
-        <include filename="../models/compatition_end.model" model_name="compatition_end" model_pose="0 4 0.001 0 0 0.0" />
+        <include filename="../models/competition_start.model" model_name="competition_start" model_pose="0 0 0.001 0 0 0.0" />
+        <include filename="../models/competition_end.model" model_name="competition_end" model_pose="0 4 0.001 0 0 0.0" />
     </world>
 </gazebo>
 

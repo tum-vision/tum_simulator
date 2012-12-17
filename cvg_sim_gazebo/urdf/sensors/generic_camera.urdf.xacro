@@ -42,10 +42,10 @@ xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"
     <joint name="${name}_optical_joint" type="fixed">
       <origin xyz="0 0 0" rpy="${-M_PI/2} 0.0 ${-M_PI/2}" />
       <parent link="${name}_link" />
-      <child link="${name}_optical_frame"/>
+      <child link="ardrone_base_${name}cam"/>
     </joint>
     
-    <link name="${name}_optical_frame">
+    <link name="ardrone_base_${name}cam">
       <inertial>
         <mass value="0.01" />
         <origin xyz="0 0 0" />

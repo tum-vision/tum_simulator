@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_test
+END
+mainpage.dox
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_test/mainpage.dox
+END
+CMakeLists.txt
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_test/CMakeLists.txt
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_test/Makefile
+END
+manifest.xml
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_test/manifest.xml
+END

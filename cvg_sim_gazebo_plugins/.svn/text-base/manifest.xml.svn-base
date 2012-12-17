@@ -1,0 +1,28 @@
+<package>
+  <description brief="cvg_sim_gazebo_plugins">
+
+     cvg_sim_gazebo_plugins
+
+  </description>
+  <author>Hongrong Huang</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/cvg_sim_gazebo_plugins</url>
+
+  <depend package="roscpp"/>
+  <depend package="gazebo"/>
+  
+  <depend package="std_msgs"/>
+  <depend package="geometry_msgs"/>
+  <depend package="sensor_msgs"/>
+  <depend package="nav_msgs"/>
+  <depend package="cvg_sim_msgs"/>
+
+  <export>
+    <cpp cflags="-I${prefix}/include" lflags="-Wl,-rpath,${prefix}/lib -L${prefix}/lib" />
+    <gazebo plugin_path="${prefix}/lib" />
+  </export>
+
+</package>
+
+

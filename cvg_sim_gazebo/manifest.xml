@@ -1,0 +1,20 @@
+<package>
+  <description brief="cvg_sim_gazebo">
+
+     cvg_sim_gazebo contains different models for gazebo simulator.
+     Such as: quadrocopter model, room model, landscale model, marker model.
+
+  </description>
+  <author>Hongrong Huang</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/cvg_sim_gazebo</url>
+  <depend package="gazebo"/>
+
+  <export>
+    <gazebo gazebo_media_path="${prefix}" />
+  </export>
+
+</package>
+
+

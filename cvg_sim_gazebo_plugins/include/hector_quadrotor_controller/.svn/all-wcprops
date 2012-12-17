@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo_plugins/include/hector_quadrotor_controller
+END
+quadrotor_simple_controller.h
+K 25
+svn:wc:ra_dav:version-url
+V 140
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo_plugins/include/hector_quadrotor_controller/quadrotor_simple_controller.h
+END
+quadrotor_aerodynamics.h
+K 25
+svn:wc:ra_dav:version-url
+V 135
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo_plugins/include/hector_quadrotor_controller/quadrotor_aerodynamics.h
+END

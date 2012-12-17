@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo_plugins
+END
+manifest.xml
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo_plugins/manifest.xml
+END
+mainpage.dox
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo_plugins/mainpage.dox
+END
+CMakeLists.txt
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo_plugins/CMakeLists.txt
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo_plugins/Makefile
+END

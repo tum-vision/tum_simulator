@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo/launch
+END
+rolling_landscape_120m.launch
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo/launch/rolling_landscape_120m.launch
+END
+test.launch
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo/launch/test.launch
+END
+land_station1.launch
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo/launch/land_station1.launch
+END
+land_station2.launch
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo/launch/land_station2.launch
+END
+empty_world.launch
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo/launch/empty_world.launch
+END
+outdoor_flight.launch
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo/launch/outdoor_flight.launch
+END
+spawn_quadrotor.launch
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo/launch/spawn_quadrotor.launch
+END

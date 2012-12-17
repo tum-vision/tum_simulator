@@ -1,0 +1,19 @@
+<package>
+  <description brief="cvg_sim_gazebo">
+
+     cvg_sim_gazebo
+
+  </description>
+  <author>Hongrong Huang</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/cvg_sim_gazebo</url>
+  <depend package="gazebo"/>
+
+  <export>
+    <gazebo gazebo_media_path="${prefix}" />
+  </export>
+
+</package>
+
+

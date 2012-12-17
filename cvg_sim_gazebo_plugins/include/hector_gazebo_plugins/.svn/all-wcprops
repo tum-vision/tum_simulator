@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo_plugins/include/hector_gazebo_plugins
+END
+gazebo_ros_magnetic.h
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo_plugins/include/hector_gazebo_plugins/gazebo_ros_magnetic.h
+END
+gazebo_ros_gps.h
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo_plugins/include/hector_gazebo_plugins/gazebo_ros_gps.h
+END
+gazebo_ros_imu.h
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo_plugins/include/hector_gazebo_plugins/gazebo_ros_imu.h
+END
+sensor_model.h
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo_plugins/include/hector_gazebo_plugins/sensor_model.h
+END
+diffdrive_plugin_6w.h
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo_plugins/include/hector_gazebo_plugins/diffdrive_plugin_6w.h
+END
+gazebo_ros_sonar.h
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo_plugins/include/hector_gazebo_plugins/gazebo_ros_sonar.h
+END
+reset_plugin.h
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo_plugins/include/hector_gazebo_plugins/reset_plugin.h
+END

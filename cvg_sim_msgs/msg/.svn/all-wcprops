@@ -1,0 +1,143 @@
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_msgs/msg
+END
+AttitudeCommand.msg
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_msgs/msg/AttitudeCommand.msg
+END
+PositionXYCommand.msg
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_msgs/msg/PositionXYCommand.msg
+END
+MotorPWM.msg
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_msgs/msg/MotorPWM.msg
+END
+ControllerState.msg
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_msgs/msg/ControllerState.msg
+END
+Altimeter.msg
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_msgs/msg/Altimeter.msg
+END
+VelocityZCommand.msg
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_msgs/msg/VelocityZCommand.msg
+END
+ThrustCommand.msg
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_msgs/msg/ThrustCommand.msg
+END
+Supply.msg
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_msgs/msg/Supply.msg
+END
+ServoCommand.msg
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_msgs/msg/ServoCommand.msg
+END
+HeadingCommand.msg
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_msgs/msg/HeadingCommand.msg
+END
+MotorCommand.msg
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_msgs/msg/MotorCommand.msg
+END
+RawMagnetic.msg
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_msgs/msg/RawMagnetic.msg
+END
+RawImu.msg
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_msgs/msg/RawImu.msg
+END
+RC.msg
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_msgs/msg/RC.msg
+END
+MotorStatus.msg
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_msgs/msg/MotorStatus.msg
+END
+Compass.msg
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_msgs/msg/Compass.msg
+END
+HeightCommand.msg
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_msgs/msg/HeightCommand.msg
+END
+RuddersCommand.msg
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_msgs/msg/RuddersCommand.msg
+END
+Altitude.msg
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_msgs/msg/Altitude.msg
+END
+YawrateCommand.msg
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_msgs/msg/YawrateCommand.msg
+END
+Navdata.msg
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_msgs/msg/Navdata.msg
+END
+RawRC.msg
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_msgs/msg/RawRC.msg
+END
+VelocityXYCommand.msg
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_msgs/msg/VelocityXYCommand.msg
+END

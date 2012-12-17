@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo/meshes/hokuyo_utm30lx
+END
+hokuyo_utm_30lx.dae
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo/meshes/hokuyo_utm30lx/hokuyo_utm_30lx.dae
+END
+hokuyo_utm_30lx.stl
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo/meshes/hokuyo_utm30lx/hokuyo_utm_30lx.stl
+END
+hokuyo_utm_30lxTEST_SELF_FILTER.dae
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo/meshes/hokuyo_utm30lx/hokuyo_utm_30lxTEST_SELF_FILTER.dae
+END

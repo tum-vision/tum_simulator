@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo/objects
+END
+milk.urdf
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo/objects/milk.urdf
+END
+station_marker1.model
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo/objects/station_marker1.model
+END
+station_marker2.model
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo/objects/station_marker2.model
+END

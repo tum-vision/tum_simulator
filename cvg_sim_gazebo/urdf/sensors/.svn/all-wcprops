@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo/urdf/sensors
+END
+hokuyo_utm30lx.urdf.xacro
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo/urdf/sensors/hokuyo_utm30lx.urdf.xacro
+END
+sonar_sensor.urdf.xacro
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo/urdf/sensors/sonar_sensor.urdf.xacro
+END
+generic_camera.urdf.xacro
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo/urdf/sensors/generic_camera.urdf.xacro
+END
+kinect_camera.urdf.xacro
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo/urdf/sensors/kinect_camera.urdf.xacro
+END
+thermaleye_camera.urdf.xacro
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo/urdf/sensors/thermaleye_camera.urdf.xacro
+END

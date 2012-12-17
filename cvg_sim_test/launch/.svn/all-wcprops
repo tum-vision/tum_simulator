@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_test/launch
+END
+garching_kitchen.launch
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_test/launch/garching_kitchen.launch
+END
+outdoor_flight.launch
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_test/launch/outdoor_flight.launch
+END
+tum_kitchen.launch
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_test/launch/tum_kitchen.launch
+END
+wg_collada.launch
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_test/launch/wg_collada.launch
+END
+3boxes_room.launch
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_test/launch/3boxes_room.launch
+END

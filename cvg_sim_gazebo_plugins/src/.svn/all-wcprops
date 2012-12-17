@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo_plugins/src
+END
+diffdrive_plugin_6w.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo_plugins/src/diffdrive_plugin_6w.cpp
+END
+gazebo_ros_sonar.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo_plugins/src/gazebo_ros_sonar.cpp
+END
+quadrotor_simple_controller.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo_plugins/src/quadrotor_simple_controller.cpp
+END
+gazebo_ros_baro.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo_plugins/src/gazebo_ros_baro.cpp
+END
+reset_plugin.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo_plugins/src/reset_plugin.cpp
+END
+gazebo_ros_magnetic.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo_plugins/src/gazebo_ros_magnetic.cpp
+END
+gazebo_ros_gps.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo_plugins/src/gazebo_ros_gps.cpp
+END
+gazebo_ros_imu.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo_plugins/src/gazebo_ros_imu.cpp
+END
+test_trajectory.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo_plugins/src/test_trajectory.cpp
+END

@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+
+<launch>
+  
+  <!-- Start the driver for joy_stick munipulator -->
+  <include file="$(find ardrone_joystick)/launch/teleop.launch"/>
+
+  <!-- Start image_view node for camera visualization -->
+  <node pkg="image_view" type="image_view" name="image_front_cam" args="image:=/ardrone/front/image_raw"/>
+  <node pkg="image_view" type="image_view" name="image_bottom_cam" args="image:=/ardrone/bottom/image_raw"/>
+      
+</launch>

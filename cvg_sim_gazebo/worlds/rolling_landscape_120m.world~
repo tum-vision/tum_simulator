@@ -1,0 +1,392 @@
+<?xml version ='1.0'?>
+<gazebo version ='1.0'>
+<world name='default'>
+  <scene>
+    <ambient rgba='0.500000 0.500000 0.500000 1.000000'/>
+    <background rgba='0.500000 0.500000 0.500000 1.000000'/>
+    <shadows enabled='0'/>
+  </scene>
+  <physics type='ode' update_rate='1000.000000'>
+    <gravity xyz='0.000000 0.000000 -9.810000'/>
+    <ode>
+      <solver type='quick' dt='0.001000' iters='10' precon_iters='0' sor='1.300000'/>
+      <constraints cfm='0.000000' erp='0.200000' contact_max_correcting_vel='10.000000' contact_surface_layer='0.001000'/>
+    </ode>
+  </physics>
+  <light name='directional_light_1' type='directional' cast_shadows='0'>
+    <origin pose='0.000000 0.000000 20.000000 0.000000 -0.000000 0.000000'/>
+    <diffuse rgba='1.000000 1.000000 1.000000 1.000000'/>
+    <specular rgba='1.000000 1.000000 1.000000 1.000000'/>
+    <attenuation range='300.000000' linear='1.000000' constant='1.000000' quadratic='0.000000'/>
+    <direction xyz='1.000000 1.000000 -1.000000'/>
+  </light>
+  <light name='directional_light_2' type='directional' cast_shadows='0'>
+    <origin pose='0.000000 0.000000 20.000000 0.000000 -0.000000 0.000000'/>
+    <diffuse rgba='1.000000 1.000000 1.000000 1.000000'/>
+    <specular rgba='1.000000 1.000000 1.000000 1.000000'/>
+    <attenuation range='300.000000' linear='1.000000' constant='1.000000' quadratic='0.000000'/>
+    <direction xyz='-1.000000 1.000000 -1.000000'/>
+  </light>
+  <light name='directional_light_3' type='directional' cast_shadows='0'>
+    <origin pose='0.000000 0.000000 20.000000 0.000000 -0.000000 0.000000'/>
+    <diffuse rgba='1.000000 1.000000 1.000000 1.000000'/>
+    <specular rgba='1.000000 1.000000 1.000000 1.000000'/>
+    <attenuation range='300.000000' linear='1.000000' constant='1.000000' quadratic='0.000000'/>
+    <direction xyz='-1.000000 -1.000000 -1.000000'/>
+  </light>
+  <model name='120m_landscape_smooth_tri' static='1'>
+    <link name='120m_landscape_smooth_tri_link' gravity='1' self_collide='0' kinematic='0'>
+      <origin pose='0.000000 0.000000 0.000000 0.000000 -0.000000 0.000000'/>
+      <collision name='120m_landscape_smooth_tri_collision' laser_retro='0.000000'>
+        <geometry>
+          <mesh filename='120m_landscape_smooth_tri.dae' scale='1.000000 1.000000 1.000000'/>
+        </geometry>
+        <origin pose='0.000000 0.000000 0.000000 0.000000 -0.000000 0.000000'/>
+        <surface>
+          <bounce restitution_coefficient='0.000000' threshold='100000.000000'/>
+          <friction>
+            <ode mu='-1.000000' mu2='-1.000000' fdir1='0.000000 0.000000 0.000000' slip1='0.000000' slip2='0.000000'/>
+          </friction>
+          <contact>
+            <ode soft_cfm='0.000000' soft_erp='0.200000' kp='1000000000000.000000' kd='1.000000' max_vel='100.000000' min_depth='0.001000'/>
+          </contact>
+        </surface>
+      </collision>
+      <visual name='120m_landscape_smooth_tri' cast_shadows='0' laser_retro='0.000000' transparency='0.000000'>
+        <geometry>
+          <mesh filename='120m_landscape_smooth_tri.dae' scale='1.000000 1.000000 1.000000'/>
+        </geometry>
+      </visual>
+      <damping/>
+    </link>
+  </model>
+  <model name='quadrotor' static='0'>
+    <origin pose='0.000000 0.000000 0.500000 0.000000 -0.000000 0.000000'/>
+    <link name='base_link' gravity='1' self_collide='0' kinematic='0'>
+      <origin pose='0.000000 0.000000 0.000000 0.000000 -0.000000 0.000000'/>
+      <inertial mass='1.500000' density='1.000000'>
+        <origin pose='0.002133 0.000000 -0.000080 0.000000 -0.000000 0.000000'/>
+        <inertia ixx='0.013721' ixy='0.000000' ixz='0.000005' iyy='0.014446' iyz='0.000000' izz='0.024725'/>
+      </inertial>
+      <collision name='base_link_geom' laser_retro='0.000000'>
+        <origin pose='0.000000 0.000000 0.000000 0.000000 -0.000000 0.000000'/>
+        <geometry>
+          <mesh filename='/usr/stud/huangho/ros_workspace/cvpr-ros-internal/trunk/cvg_simulator/cvg_sim_gazebo/meshes/quadrotor/quadrotor_3.stl' scale='1.000000 1.000000 1.000000'/>
+        </geometry>
+        <surface>
+          <friction>
+            <ode mu='-1.000000' mu2='-1.000000' fdir1='0.000000 0.000000 0.000000' slip1='0.000000' slip2='0.000000'/>
+          </friction>
+          <bounce restitution_coefficient='0.000000' threshold='100000.000000'/>
+          <contact>
+            <ode soft_cfm='0.000000' soft_erp='0.200000' kp='1000000000000.000000' kd='1.000000' max_vel='100.000000' min_depth='0.001000'/>
+          </contact>
+        </surface>
+      </collision>
+      <visual name='base_link_geom_visual' cast_shadows='1' laser_retro='0.000000' transparency='0.000000'>
+        <origin pose='0.000000 0.000000 0.000000 0.000000 -0.000000 0.000000'/>
+        <geometry>
+          <mesh filename='/usr/stud/huangho/ros_workspace/cvpr-ros-internal/trunk/cvg_simulator/cvg_sim_gazebo/meshes/quadrotor/quadrotor_3.dae' scale='1.000000 1.000000 1.000000'/>
+        </geometry>
+      </visual>
+      <collision name='base_link_geom_bottom_link' laser_retro='0.000000'>
+        <origin pose='0.050000 0.000000 -0.010000 3.141593 -1.570793 3.141593'/>
+        <geometry>
+          <box size='0.010000 0.010000 0.010000'/>
+        </geometry>
+        <surface>
+          <friction>
+            <ode mu='-1.000000' mu2='-1.000000' fdir1='0.000000 0.000000 0.000000' slip1='0.000000' slip2='0.000000'/>
+          </friction>
+          <bounce restitution_coefficient='0.000000' threshold='100000.000000'/>
+          <contact>
+            <ode soft_cfm='0.000000' soft_erp='0.200000' kp='1000000000000.000000' kd='1.000000' max_vel='100.000000' min_depth='0.001000'/>
+          </contact>
+        </surface>
+      </collision>
+      <visual name='base_link_geom_bottom_link_visual' cast_shadows='1' laser_retro='0.000000' transparency='0.000000'>
+        <origin pose='0.050000 0.000000 -0.010000 3.141590 -1.570790 3.141590'/>
+        <geometry>
+          <box size='0.010000 0.010000 0.010000'/>
+        </geometry>
+        <material script='PR2/Blue'/>
+      </visual>
+      <collision name='base_link_geom_bottom_optical_frame' laser_retro='0.000000'>
+        <origin pose='0.050000 0.000000 -0.010000 -0.000000 -0.000000 -1.570800'/>
+        <geometry>
+          <box size='0.001000 0.001000 0.001000'/>
+        </geometry>
+        <surface>
+          <friction>
+            <ode mu='-1.000000' mu2='-1.000000' fdir1='0.000000 0.000000 0.000000' slip1='0.000000' slip2='0.000000'/>
+          </friction>
+          <bounce restitution_coefficient='0.000000' threshold='100000.000000'/>
+          <contact>
+            <ode soft_cfm='0.000000' soft_erp='0.200000' kp='1000000000000.000000' kd='1.000000' max_vel='100.000000' min_depth='0.001000'/>
+          </contact>
+        </surface>
+      </collision>
+      <visual name='base_link_geom_bottom_optical_frame_visual' cast_shadows='1' laser_retro='0.000000' transparency='0.000000'>
+        <origin pose='0.050000 0.000000 -0.010000 -0.000000 -0.000000 -1.570800'/>
+        <geometry>
+          <box size='0.001000 0.001000 0.001000'/>
+        </geometry>
+      </visual>
+      <collision name='base_link_geom_front_link' laser_retro='0.000000'>
+        <origin pose='0.250000 0.000000 0.000000 0.000000 -0.000000 0.000000'/>
+        <geometry>
+          <box size='0.010000 0.010000 0.010000'/>
+        </geometry>
+        <surface>
+          <friction>
+            <ode mu='-1.000000' mu2='-1.000000' fdir1='0.000000 0.000000 0.000000' slip1='0.000000' slip2='0.000000'/>
+          </friction>
+          <bounce restitution_coefficient='0.000000' threshold='100000.000000'/>
+          <contact>
+            <ode soft_cfm='0.000000' soft_erp='0.200000' kp='1000000000000.000000' kd='1.000000' max_vel='100.000000' min_depth='0.001000'/>
+          </contact>
+        </surface>
+      </collision>
+      <visual name='base_link_geom_front_link_visual' cast_shadows='1' laser_retro='0.000000' transparency='0.000000'>
+        <origin pose='0.250000 0.000000 0.000000 0.000000 -0.000000 0.000000'/>
+        <geometry>
+          <box size='0.010000 0.010000 0.010000'/>
+        </geometry>
+        <material script='PR2/Blue'/>
+      </visual>
+      <collision name='base_link_geom_front_optical_frame' laser_retro='0.000000'>
+        <origin pose='0.250000 0.000000 0.000000 -1.570800 -0.000000 -1.570800'/>
+        <geometry>
+          <box size='0.001000 0.001000 0.001000'/>
+        </geometry>
+        <surface>
+          <friction>
+            <ode mu='-1.000000' mu2='-1.000000' fdir1='0.000000 0.000000 0.000000' slip1='0.000000' slip2='0.000000'/>
+          </friction>
+          <bounce restitution_coefficient='0.000000' threshold='100000.000000'/>
+          <contact>
+            <ode soft_cfm='0.000000' soft_erp='0.200000' kp='1000000000000.000000' kd='1.000000' max_vel='100.000000' min_depth='0.001000'/>
+          </contact>
+        </surface>
+      </collision>
+      <visual name='base_link_geom_front_optical_frame_visual' cast_shadows='1' laser_retro='0.000000' transparency='0.000000'>
+        <origin pose='0.250000 0.000000 0.000000 -1.570800 -0.000000 -1.570800'/>
+        <geometry>
+          <box size='0.001000 0.001000 0.001000'/>
+        </geometry>
+      </visual>
+      <collision name='base_link_geom_sonar_link' laser_retro='0.000000'>
+        <origin pose='-0.100000 0.000000 -0.010000 3.141593 1.570793 3.141593'/>
+        <geometry>
+          <box size='0.010000 0.010000 0.010000'/>
+        </geometry>
+        <surface>
+          <friction>
+            <ode mu='-1.000000' mu2='-1.000000' fdir1='0.000000 0.000000 0.000000' slip1='0.000000' slip2='0.000000'/>
+          </friction>
+          <bounce restitution_coefficient='0.000000' threshold='100000.000000'/>
+          <contact>
+            <ode soft_cfm='0.000000' soft_erp='0.200000' kp='1000000000000.000000' kd='1.000000' max_vel='100.000000' min_depth='0.001000'/>
+          </contact>
+        </surface>
+      </collision>
+      <visual name='base_link_geom_sonar_link_visual' cast_shadows='1' laser_retro='0.000000' transparency='0.000000'>
+        <origin pose='-0.100000 0.000000 -0.010000 3.141590 1.570790 3.141590'/>
+        <geometry>
+          <mesh filename='/usr/stud/huangho/ros_workspace/cvpr-ros-internal/trunk/cvg_simulator/cvg_sim_gazebo/meshes/sonar_sensor/max_sonar_ez4.dae' scale='1.000000 1.000000 1.000000'/>
+        </geometry>
+      </visual>
+      <sensor name='bottom_camera_sensor' type='depth' always_on='0' update_rate='20.000000' visualize='0'>
+        <origin pose='0.050000 0.000000 -0.010000 3.141593 -1.570793 3.141593'/>
+        <camera>
+          <horizontal_fov angle='1.047198'/>
+          <image width='640' height='360' format='R8G8B8'/>
+          <clip near='0.010000' far='100.000000'/>
+        </camera>
+        <plugin name='bottom_camera_controller' filename='libgazebo_ros_depth_camera.so'>
+          <cameraName>/ardrone/bottom</cameraName>
+          <alwaysOn>1</alwaysOn>
+          <updateRate>20</updateRate>
+          <imageTopicName>/ardrone/bottom/image_raw</imageTopicName>
+          <cameraInfoTopicName>/ardrone/bottom/camera_info</cameraInfoTopicName>
+          <frameName>ardrone_base_bottomcam</frameName>
+          <robotNamespace>/</robotNamespace>
+        </plugin>
+      </sensor>
+      <sensor name='front_camera_sensor' type='depth' always_on='0' update_rate='20.000000' visualize='0'>
+        <origin pose='0.250000 0.000000 0.000000 0.000000 -0.000000 0.000000'/>
+        <camera>
+          <horizontal_fov angle='1.047198'/>
+          <image width='640' height='360' format='R8G8B8'/>
+          <clip near='0.010000' far='100.000000'/>
+        </camera>
+        <plugin name='front_camera_controller' filename='libgazebo_ros_depth_camera.so'>
+          <cameraName>/ardrone/front</cameraName>
+          <alwaysOn>1</alwaysOn>
+          <updateRate>20</updateRate>
+          <imageTopicName>/ardrone/front/image_raw</imageTopicName>
+          <cameraInfoTopicName>/ardrone/front/camera_info</cameraInfoTopicName>
+          <frameName>ardrone_base_frontcam</frameName>
+          <robotNamespace>/</robotNamespace>
+        </plugin>
+      </sensor>
+      <sensor name='sonar' type='ray' always_on='0' update_rate='10.000000' visualize='0'>
+        <origin pose='-0.100000 0.000000 -0.010000 3.141593 1.570793 3.141593'/>
+        <ray>
+          <scan>
+            <horizontal samples='3' resolution='1.000000' min_angle='-0.349066' max_angle='0.349066'/>
+            <vertical samples='3' resolution='1.000000' min_angle='-0.349066' max_angle='0.349066'/>
+          </scan>
+          <range min='0.010000' max='3.000000' resolution='0.010000'/>
+        </ray>
+        <plugin name='gazebo_ros_sonar_controller' filename='libhector_gazebo_ros_sonar.so'>
+          <gaussianNoise>0.005</gaussianNoise>
+          <topicName>sonar_height</topicName>
+          <frameId>sonar_link</frameId>
+          <robotNamespace>/</robotNamespace>
+        </plugin>
+      </sensor>
+    </link>
+    <plugin name='quadrotor_imu_sim' filename='libhector_gazebo_ros_imu.so'>
+      <alwaysOn>1</alwaysOn>
+      <updateRate>100.0</updateRate>
+      <bodyName>base_link</bodyName>
+      <frameId>ardrone_base_link</frameId>
+      <topicName>/ardrone/imu</topicName>
+      <rpyOffsets>0 0 0</rpyOffsets>
+      <gaussianNoise>0</gaussianNoise>
+      <accelDrift>0.5 0.5 0.5</accelDrift>
+      <accelGaussianNoise>0.35 0.35 0.3</accelGaussianNoise>
+      <rateDrift>0.1 0.1 0.1</rateDrift>
+      <rateGaussianNoise>0.05 0.05 0.015</rateGaussianNoise>
+      <headingDrift>0.1</headingDrift>
+      <headingGaussianNoise>0.05</headingGaussianNoise>
+      <robotNamespace>/</robotNamespace>
+    </plugin>
+    <plugin name='quadrotor_baro_sim' filename='libhector_gazebo_ros_baro.so'>
+      <alwaysOn>1</alwaysOn>
+      <updateRate>10.0</updateRate>
+      <bodyName>base_link</bodyName>
+      <topicName>pressure_height</topicName>
+      <altimeterTopicName>altimeter</altimeterTopicName>
+      <offset>0</offset>
+      <drift>0.1</drift>
+      <gaussianNoise>0.5</gaussianNoise>
+      <robotNamespace>/</robotNamespace>
+    </plugin>
+    <plugin name='quadrotor_magnetic_sim' filename='libhector_gazebo_ros_magnetic.so'>
+      <alwaysOn>1</alwaysOn>
+      <updateRate>10.0</updateRate>
+      <bodyName>base_link</bodyName>
+      <topicName>magnetic</topicName>
+      <offset>0 0 0</offset>
+      <drift>0.0 0.0 0.0</drift>
+      <gaussianNoise>1.3e-2 1.3e-2 1.3e-2</gaussianNoise>
+      <robotNamespace>/</robotNamespace>
+    </plugin>
+    <plugin name='quadrotor_gps_sim' filename='libhector_gazebo_ros_gps.so'>
+      <alwaysOn>1</alwaysOn>
+      <updateRate>4.0</updateRate>
+      <bodyName>base_link</bodyName>
+      <topicName>fix</topicName>
+      <velocityTopicName>fix_velocity</velocityTopicName>
+      <drift>5.0 5.0 5.0</drift>
+      <gaussianNoise>0.1 0.1 0.1</gaussianNoise>
+      <velocityDrift>0 0 0</velocityDrift>
+      <velocityGaussianNoise>0.1 0.1 0.1</velocityGaussianNoise>
+      <robotNamespace>/</robotNamespace>
+    </plugin>
+    <plugin name='quadrotor_groundtruth_sim' filename='libgazebo_ros_p3d.so'>
+      <alwaysOn>1</alwaysOn>
+      <updateRate>100.0</updateRate>
+      <bodyName>base_link</bodyName>
+      <topicName>ground_truth/state</topicName>
+      <gaussianNoise>0.0</gaussianNoise>
+      <frameName>map</frameName>
+      <robotNamespace>/</robotNamespace>
+    </plugin>
+    <plugin name='quadrotor_simple_controller' filename='libhector_gazebo_quadrotor_simple_controller.so'>
+      <alwaysOn>1</alwaysOn>
+      <updateRate>0.0</updateRate>
+      <bodyName>base_link</bodyName>
+      <stateTopic>ground_truth/state</stateTopic>
+      <imuTopic>ardrone/imu</imuTopic>
+      <topicName>cmd_vel</topicName>
+      <rollpitchProportionalGain>10.0</rollpitchProportionalGain>
+      <rollpitchDifferentialGain>5.0</rollpitchDifferentialGain>
+      <rollpitchLimit>0.5</rollpitchLimit>
+      <yawProportionalGain>2.0</yawProportionalGain>
+      <yawDifferentialGain>1.0</yawDifferentialGain>
+      <yawLimit>1.5</yawLimit>
+      <velocityXYProportionalGain>5.0</velocityXYProportionalGain>
+      <velocityXYDifferentialGain>1.0</velocityXYDifferentialGain>
+      <velocityXYLimit>2</velocityXYLimit>
+      <velocityZProportionalGain>5.0</velocityZProportionalGain>
+      <velocityZDifferentialGain>1.0</velocityZDifferentialGain>
+      <velocityZLimit>2</velocityZLimit>
+      <maxForce>30</maxForce>
+      <robotNamespace>/</robotNamespace>
+    </plugin>
+    <plugin name='quadrotor_state_controller' filename='libhector_gazebo_quadrotor_state_controller.so'>
+      <alwaysOn>1</alwaysOn>
+      <updateRate>50.0</updateRate>
+      <bodyName>base_link</bodyName>
+      <stateTopic>ground_truth/state</stateTopic>
+      <imuTopic>ardrone/imu</imuTopic>
+      <sonarTopic>sonar_height</sonarTopic>
+      <topicName>cmd_vel</topicName>
+      <robotNamespace>/</robotNamespace>
+    </plugin>
+  </model>
+  <model name='land_station1' static='1'>
+    <origin pose='0.000000 2.000000 0.000000 0.000000 -0.000000 0.000000'/>
+    <link name='landstation_body' gravity='1' self_collide='0' kinematic='0'>
+      <origin pose='0.000000 0.000000 0.000000 0.000000 -0.000000 0.000000'/>
+      <collision name='landstation_geom' laser_retro='0.000000'>
+        <origin pose='0.000000 0.000000 0.000000 0.000000 -0.000000 0.000000'/>
+        <geometry>
+          <mesh filename='Marker1.dae' scale='1.000000 1.000000 1.000000'/>
+        </geometry>
+        <surface>
+          <friction>
+            <ode mu='-1.000000' mu2='-1.000000' fdir1='0.000000 0.000000 0.000000' slip1='0.000000' slip2='0.000000'/>
+          </friction>
+          <bounce restitution_coefficient='0.000000' threshold='100000.000000'/>
+          <contact>
+            <ode soft_cfm='0.000000' soft_erp='0.200000' kp='1000000000000.000000' kd='1.000000' max_vel='100.000000' min_depth='0.001000'/>
+          </contact>
+        </surface>
+      </collision>
+      <visual name='landstation_geom_visual' cast_shadows='1' laser_retro='0.000000' transparency='0.000000'>
+        <origin pose='0.000000 0.000000 0.000000 0.000000 -0.000000 0.000000'/>
+        <geometry>
+          <mesh filename='Marker1.dae' scale='1.000000 1.000000 1.000000'/>
+        </geometry>
+      </visual>
+    </link>
+  </model>
+  <state world_name='default' time='112 566000000'>
+    <model name='120m_landscape_smooth_tri'>
+      <pose>0.000000 0.000000 0.000000 0.000000 -0.000000 0.000000</pose>
+      <link name='120m_landscape_smooth_tri_link'>
+        <pose>0.000000 0.000000 0.000000 0.000000 -0.000000 0.000000</pose>
+        <velocity>0.000000 0.000000 0.000000 0.000000 -0.000000 0.000000</velocity>
+      </link>
+    </model>
+    <model name='quadrotor'>
+      <pose>-0.231452 1.824270 0.426848 -0.000852 0.000902 -0.015479</pose>
+      <link name='base_link'>
+        <pose>0.000000 0.000000 0.000000 0.000000 -0.000000 0.000000</pose>
+        <velocity>0.000000 0.000000 0.000000 0.000000 -0.000000 0.000000</velocity>
+      </link>
+    </model>
+    <model name='land_station1'>
+      <pose>0.000000 2.000000 0.000000 0.000000 -0.000000 0.000000</pose>
+      <link name='landstation_body'>
+        <pose>0.000000 0.000000 0.000000 0.000000 -0.000000 0.000000</pose>
+        <velocity>0.000000 0.000000 0.000000 0.000000 -0.000000 0.000000</velocity>
+      </link>
+    </model>
+  </state>
+</world>
+</gazebo>

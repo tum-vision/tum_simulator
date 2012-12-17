@@ -1,0 +1,9 @@
+<stack>
+  <description brief="cvg_simulator">Stack from CVG for simulating quadrocopters</description>
+  <author>Maintained by Hongrong Huang</author>
+  <license>BSD</license>  
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/test_robot</url>
+  <depend stack="ros" />
+
+</stack>

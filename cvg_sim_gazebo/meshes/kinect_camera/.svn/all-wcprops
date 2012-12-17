@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo/meshes/kinect_camera
+END
+kinect_camera_simple.stl
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo/meshes/kinect_camera/kinect_camera_simple.stl
+END
+kinect_camera_simple.dae
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo/meshes/kinect_camera/kinect_camera_simple.dae
+END

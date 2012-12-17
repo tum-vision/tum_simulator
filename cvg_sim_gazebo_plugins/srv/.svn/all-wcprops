@@ -1,0 +1,11 @@
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo_plugins/srv
+END
+SetBias.srv
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo_plugins/srv/SetBias.srv
+END

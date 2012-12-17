@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo_plugins/urdf
+END
+quadrotor_plugins.urdf.xacro
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo_plugins/urdf/quadrotor_plugins.urdf.xacro
+END
+CMakeLists.txt
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo_plugins/urdf/CMakeLists.txt
+END
+quadrotor_plugins.urdf.xacro.in
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo_plugins/urdf/quadrotor_plugins.urdf.xacro.in
+END
+quadrotor_sensors.urdf.xacro
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo_plugins/urdf/quadrotor_sensors.urdf.xacro
+END
+quadrotor_simple_controller.urdf.xacro
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo_plugins/urdf/quadrotor_simple_controller.urdf.xacro
+END

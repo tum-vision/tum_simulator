@@ -1,0 +1,11 @@
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo_plugins/include/hector_quadrotor_gazebo_plugins
+END
+gazebo_ros_baro.h
+K 25
+svn:wc:ra_dav:version-url
+V 132
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo_plugins/include/hector_quadrotor_gazebo_plugins/gazebo_ros_baro.h
+END

@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo/worlds
+END
+garching_kitchen.world
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo/worlds/garching_kitchen.world
+END
+tum_kitchen.world
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo/worlds/tum_kitchen.world
+END
+wg_collada.world
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo/worlds/wg_collada.world
+END
+empty.world
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo/worlds/empty.world
+END
+3boxes_room.world
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo/worlds/3boxes_room.world
+END
+rolling_landscape_120m.world
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/cvpr-ros-internal/!svn/ver/563/trunk/cvg_simulator/cvg_sim_gazebo/worlds/rolling_landscape_120m.world
+END

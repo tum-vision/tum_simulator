@@ -1,0 +1,21 @@
+<package>
+  <description brief="cvg_sim_msgs">
+
+     cvg_sim_msgs contains message form for cvg_sim_gazebo_plugins.
+     This package is based on hector_uav_msgs by Stefan Kohlbrecher, TU Darmstadt.
+
+  </description>
+  <author>Hongrong Huang</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/cvg_sim_msgs</url>
+
+  <depend package="geometry_msgs" />
+
+  <export>
+    <cpp cflags="-I${prefix}/include"/>
+  </export>
+
+</package>
+
+

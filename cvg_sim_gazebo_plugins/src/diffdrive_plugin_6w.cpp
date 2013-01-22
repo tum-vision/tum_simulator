@@ -305,8 +305,8 @@ void DiffDrivePlugin6W::publish_odometry()
   math::Vector3 velocity = link->GetWorldLinearVel();
   math::Vector3 angular_velocity = link->GetWorldAngularVel();
 
-  btQuaternion qt(pose.rot.x, pose.rot.y, pose.rot.z, pose.rot.w);
-  btVector3 vt(pose.pos.x, pose.pos.y, pose.pos.z);
+  tf::Quaternion qt(pose.rot.x, pose.rot.y, pose.rot.z, pose.rot.w);
+  tf::Vector3 vt(pose.pos.x, pose.pos.y, pose.pos.z);
   tf::Transform base_footprint_to_odom(qt, vt);
 
   transform_broadcaster_->sendTransform(tf::StampedTransform(base_footprint_to_odom,

@@ -100,8 +100,8 @@ void imuCallback(sensor_msgs::Imu const &imu) {
 
   tf::Quaternion orientation;
   tf::quaternionMsgToTF(imu.orientation, orientation);
-  btScalar yaw, pitch, roll;
-  btMatrix3x3(orientation.asBt()).getEulerYPR(yaw, pitch, roll);
+  tfScalar yaw, pitch, roll;
+  tf::Matrix3x3(orientation).getEulerYPR(yaw, pitch, roll);
 
   // base_link transform (roll, pitch)
   tf.child_frame_id_ = child_frame_id;

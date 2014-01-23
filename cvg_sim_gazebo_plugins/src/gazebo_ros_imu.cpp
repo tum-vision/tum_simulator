@@ -56,7 +56,7 @@
 
 #include <hector_gazebo_plugins/gazebo_ros_imu.h>
 #include "common/Events.hh"
-#include "physics/physics.h"
+#include "physics/physics.hh"
 
 namespace gazebo
 {
@@ -149,7 +149,8 @@ void GazeboRosIMU::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
   }
 
   if (_sdf->HasElement("rpyOffset")) {
-    math::Vector3 rpyOffset = _sdf->GetElement("rpyOffset")->GetValueVector3();
+    sdf::Vector3 sdfVec = _sdf->GetElement("rpyOffset")->GetValueVector3();
+    math::Vector3 rpyOffset = math::Vector3(sdfVec.x, sdfVec.y, sdfVec.z);
     if (accelModel.offset.y == 0.0 && rpyOffset.x != 0.0) accelModel.offset.y = -rpyOffset.x * 9.8065;
     if (accelModel.offset.x == 0.0 && rpyOffset.y != 0.0) accelModel.offset.x =  rpyOffset.y * 9.8065;
     if (headingModel.offset == 0.0 && rpyOffset.z != 0.0) headingModel.offset =  rpyOffset.z;
@@ -198,7 +199,7 @@ void GazeboRosIMU::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
   // New Mechanism for Updating every World Cycle
   // Listen to the update event. This event is broadcast every
   // simulation iteration.
-  updateConnection = event::Events::ConnectWorldUpdateStart(
+  updateConnection = event::Events::ConnectWorldUpdateBegin(
       boost::bind(&GazeboRosIMU::Update, this));
 }
 
@@ -287,8 +288,8 @@ void GazeboRosIMU::Update()
 
   // apply offset error to orientation (pseudo AHRS)
   double normalization_constant = (gravity_body + accelModel.getCurrentError()).GetLength() * gravity_body.GetLength();
-  double cos_alpha = (gravity_body + accelModel.getCurrentError()).GetDotProd(gravity_body)/normalization_constant;
-  math::Vector3 normal_vector(gravity_body.GetCrossProd(accelModel.getCurrentError()));
+  double cos_alpha = (gravity_body + accelModel.getCurrentError()).Dot(gravity_body)/normalization_constant;
+  math::Vector3 normal_vector(gravity_body.Cross(accelModel.getCurrentError()));
   normal_vector *= sqrt((1 - cos_alpha)/2)/normalization_constant;
   math::Quaternion attitudeError(sqrt((1 + cos_alpha)/2), normal_vector.x, normal_vector.y, normal_vector.z);
   math::Quaternion headingError(cos(headingModel.getCurrentError()/2),0,0,sin(headingModel.getCurrentError()/2));

@@ -30,6 +30,7 @@
 #define HECTOR_GAZEBO_PLUGINS_GAZEBO_ROS_SONAR_H
 
 #include "common/Plugin.hh"
+#include "common/Time.hh"
 
 #include <ros/callback_queue.h>
 #include <ros/ros.h>

@@ -42,7 +42,7 @@
 */
 #include <hector_quadrotor_controller/quadrotor_simple_controller.h>
 #include "common/Events.hh"
-#include "physics/physics.h"
+#include "physics/physics.hh"
 
 #include <cmath>
 #include <stdlib.h>
@@ -201,7 +201,7 @@ void GazeboQuadrotorSimpleController::Load(physics::ModelPtr _model, sdf::Elemen
   // New Mechanism for Updating every World Cycle
   // Listen to the update event. This event is broadcast every
   // simulation iteration.
-  updateConnection = event::Events::ConnectWorldUpdateStart(
+  updateConnection = event::Events::ConnectWorldUpdateBegin(
       boost::bind(&GazeboQuadrotorSimpleController::Update, this));
 }
 
@@ -306,7 +306,7 @@ void GazeboQuadrotorSimpleController::Update()
   // Get gravity
   math::Vector3 gravity_body = pose.rot.RotateVector(world->GetPhysicsEngine()->GetGravity());
   double gravity = gravity_body.GetLength();
-  double load_factor = gravity * gravity / world->GetPhysicsEngine()->GetGravity().GetDotProd(gravity_body);  // Get gravity
+  double load_factor = gravity * gravity / world->GetPhysicsEngine()->GetGravity().Dot(gravity_body);  // Get gravity
 
   // Rotate vectors to coordinate frames relevant for control
   math::Quaternion heading_quaternion(cos(euler.z/2),0,0,sin(euler.z/2));

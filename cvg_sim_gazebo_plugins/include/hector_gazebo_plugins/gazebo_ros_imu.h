@@ -65,6 +65,7 @@
 #endif
 
 #include "common/Plugin.hh"
+#include "common/Time.hh"
 
 #include <ros/ros.h>
 #include <boost/thread/mutex.hpp>

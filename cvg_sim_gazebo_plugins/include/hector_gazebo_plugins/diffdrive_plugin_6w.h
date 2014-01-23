@@ -28,6 +28,7 @@
 #include <map>
 
 #include "common/Plugin.hh"
+#include "common/Time.hh"
 //#include "physics/physics.h"
 //#include "transport/TransportTypes.hh"
 //#include "msgs/MessageTypes.hh"

@@ -28,7 +28,7 @@
 
 #include <hector_gazebo_plugins/gazebo_ros_gps.h>
 #include "common/Events.hh"
-#include "physics/physics.h"
+#include "physics/physics.hh"
 
 static const double EARTH_RADIUS = 6371000.0;
 static const double DEFAULT_REFERENCE_LATITUDE  = 49.9;
@@ -153,7 +153,7 @@ void GazeboRosGps::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
   // New Mechanism for Updating every World Cycle
   // Listen to the update event. This event is broadcast every
   // simulation iteration.
-  updateConnection = event::Events::ConnectWorldUpdateStart(
+  updateConnection = event::Events::ConnectWorldUpdateBegin(
       boost::bind(&GazeboRosGps::Update, this));
 }
 

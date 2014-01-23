@@ -8,7 +8,7 @@ xmlns:xacro="http://ros.org/wiki/xacro"
   <!-- Quadrotor Simple Controller Plugin -->
   <xacro:macro name="quadrotor_controller">
     <gazebo>
-      <controller:hector_gazebo_quadrotor_simple_controller name="quadrotor_simple_controller" plugin="libhector_gazebo_quadrotor_simple_controller.so">
+      <plugin name="quadrotor_simple_controller" filename="libhector_gazebo_quadrotor_simple_controller.so">
         <alwaysOn>true</alwaysOn>
         <updateRate>0.0</updateRate>
         <bodyName>base_link</bodyName>
@@ -31,9 +31,9 @@ xmlns:xacro="http://ros.org/wiki/xacro"
         <motionSmallNoise>0.05</motionSmallNoise>
         <motionDriftNoise>0.03</motionDriftNoise>
         <motionDriftNoiseTime>5.0</motionDriftNoiseTime>
-      </controller:hector_gazebo_quadrotor_simple_controller>
+      </plugin>
 
-      <controller:hector_gazebo_quadrotor_state_controller name="quadrotor_state_controller" plugin="libhector_gazebo_quadrotor_state_controller.so">
+      <plugin name="quadrotor_state_controller" filename="libhector_gazebo_quadrotor_state_controller.so">
         <alwaysOn>true</alwaysOn>
         <updateRate>0.0</updateRate>
         <bodyName>base_link</bodyName>
@@ -41,7 +41,7 @@ xmlns:xacro="http://ros.org/wiki/xacro"
         <imuTopic>ardrone/imu</imuTopic>
         <sonarTopic>sonar_height</sonarTopic>
         <topicName>cmd_vel</topicName>
-      </controller:hector_gazebo_quadrotor_state_controller>
+      </plugin>
     </gazebo>
   </xacro:macro>
 </robot>

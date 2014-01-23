@@ -28,7 +28,7 @@
 
 #include <hector_gazebo_plugins/gazebo_ros_sonar.h>
 #include "common/Events.hh"
-#include "physics/physics.h"
+#include "physics/physics.hh"
 #include "sensors/RaySensor.hh"
 
 #include <limits>
@@ -85,7 +85,7 @@ void GazeboRosSonar::Load(sensors::SensorPtr _sensor, sdf::ElementPtr _sdf)
 
   range_.header.frame_id = frame_id_;
   range_.radiation_type = sensor_msgs::Range::ULTRASOUND;
-  range_.field_of_view = std::min(fabs((sensor_->GetAngleMax() - sensor_->GetAngleMin()).GetAsRadian()), fabs((sensor_->GetVerticalAngleMax() - sensor_->GetVerticalAngleMin()).GetAsRadian()));
+  range_.field_of_view = std::min(fabs((sensor_->GetAngleMax() - sensor_->GetAngleMin()).Radian()), fabs((sensor_->GetVerticalAngleMax() - sensor_->GetVerticalAngleMin()).Radian()));
   range_.max_range = sensor_->GetRangeMax();
   range_.min_range = sensor_->GetRangeMin();
 

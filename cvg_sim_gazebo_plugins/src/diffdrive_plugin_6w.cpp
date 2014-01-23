@@ -35,7 +35,7 @@
 
 #include <hector_gazebo_plugins/diffdrive_plugin_6w.h>
 #include "common/Events.hh"
-#include "physics/physics.h"
+#include "physics/physics.hh"
 
 #include <ros/ros.h>
 #include <tf/transform_broadcaster.h>
@@ -162,7 +162,7 @@ void DiffDrivePlugin6W::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
   // New Mechanism for Updating every World Cycle
   // Listen to the update event. This event is broadcast every
   // simulation iteration.
-  updateConnection = event::Events::ConnectWorldUpdateStart(
+  updateConnection = event::Events::ConnectWorldUpdateBegin(
       boost::bind(&DiffDrivePlugin6W::Update, this));
 }
 

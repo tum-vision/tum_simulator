@@ -14,7 +14,7 @@
 
 #include <hector_quadrotor_controller/quadrotor_state_controller.h>
 #include "common/Events.hh"
-#include "physics/physics.h"
+#include "physics/physics.hh"
 
 #include <cmath>
 
@@ -249,7 +249,7 @@ void GazeboQuadrotorStateController::Load(physics::ModelPtr _model, sdf::Element
   // New Mechanism for Updating every World Cycle
   // Listen to the update event. This event is broadcast every
   // simulation iteration.
-  updateConnection = event::Events::ConnectWorldUpdateStart(
+  updateConnection = event::Events::ConnectWorldUpdateBegin(
       boost::bind(&GazeboQuadrotorStateController::Update, this));
 
   robot_current_state = LANDED_MODEL;

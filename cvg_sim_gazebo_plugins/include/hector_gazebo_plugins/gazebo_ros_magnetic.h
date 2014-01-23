@@ -30,6 +30,7 @@
 #define HECTOR_GAZEBO_PLUGINS_GAZEBO_ROS_MAGNETIC_H
 
 #include "common/Plugin.hh"
+#include "common/Time.hh"
 
 #include <ros/ros.h>
 #include <geometry_msgs/Vector3Stamped.h>

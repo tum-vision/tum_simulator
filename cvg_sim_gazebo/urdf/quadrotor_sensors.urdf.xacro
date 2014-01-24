@@ -17,7 +17,7 @@ xmlns:xacro="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface">
 
     <!-- Sonar height sensor -->
     <include filename="$(find cvg_sim_gazebo)/urdf/sensors/sonar_sensor.urdf.xacro" />
-    <xacro:sonar_sensor name="sonar" parent="base_link" ros_topic="sonar_height" update_rate="10" min_range="0.01" max_range="3.0" field_of_view="40" ray_count="3">
+    <xacro:sonar_sensor name="sonar" parent="base_link" ros_topic="sonar_height" update_rate="10" min_range="0.01" max_range="3.0" field_of_view="${40*M_PI/180}" ray_count="3">
       <origin xyz="-0.15 0.0 0.0" rpy="0 ${90*M_PI/180} 0"/>
     </xacro:sonar_sensor>
 
@@ -30,16 +30,16 @@ xmlns:xacro="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface">
     
     <!-- The following two cameras should be united to one! -->
     <!-- Forward facing camera -->
-    <include filename="$(find cvg_sim_gazebo)/urdf/sensors/generic_camera.urdf.xacro" />
-    <xacro:generic_camera name="front" sim_name="ardrone" parent="base_link" update_rate="60" res_x="640" res_y="360" image_format="R8G8B8" hfov="81">
+    <!--include filename="$(find cvg_sim_gazebo)/urdf/sensors/generic_camera.urdf.xacro" />
+    <xacro:generic_camera name="front" sim_name="ardrone" parent="base_link" update_rate="60" res_x="640" res_y="360" image_format="R8G8B8" hfov="${81*M_PI/180}">
       <origin xyz="0.21 0.0 0.01" rpy="0 0 0"/>
-    </xacro:generic_camera>
+    </xacro:generic_camera-->
 
     <!-- Downward facing camera -->
-    <include filename="$(find cvg_sim_gazebo)/urdf/sensors/generic_camera.urdf.xacro" />
-    <xacro:generic_camera name="bottom" sim_name="ardrone" parent="base_link" update_rate="60" res_x="640" res_y="360" image_format="R8G8B8" hfov="81">
+    <!--include filename="$(find cvg_sim_gazebo)/urdf/sensors/generic_camera.urdf.xacro" />
+    <xacro:generic_camera name="bottom" sim_name="ardrone" parent="base_link" update_rate="60" res_x="640" res_y="360" image_format="R8G8B8" hfov="${81*M_PI/180}">
       <origin xyz="0.15 0.0 0.0" rpy="0 -${M_PI/2} 0"/>
-    </xacro:generic_camera>
+    </xacro:generic_camera-->
     
 </robot>
   

@@ -68,14 +68,22 @@ xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"
     </link>
       
     <gazebo reference="${name}_link">
-      <sensor:camera name="${name}_camera_sensor">
-        <imageSize>${res_x} ${res_y}</imageSize>
-        <imageFormat>${image_format}</imageFormat>
-        <hfov>${hfov}</hfov>
-        <nearClip>0.01</nearClip>
-        <farClip>100</farClip>
-        <updateRate>${update_rate}</updateRate>
-        <controller:gazebo_ros_depth_camera name="${name}_camera_controller" plugin="libgazebo_ros_depth_camera.so">
+      <sensor type="camera" name="${name}_camera_sensor">
+        <update_rate>${update_rate}</update_rate>
+        <camera name="head">
+          <horizontal_fov>${hfov}</horizontal_fov>
+          <image>
+            <width>${res_x}</width>
+            <height>${res_y}</height>
+            <format>${image_format}</format>
+          </image>
+
+          <clip>0.01
+	    <near>0.01</near>
+            <far>100</far>
+          </clip>
+        </camera>
+        <!--plugin name="${name}_camera_controller" filename="libgazebo_ros_depth_camera.so">
 	  <cameraName>/${sim_name}/${name}</cameraName>
           <alwaysOn>true</alwaysOn>
           <updateRate>${update_rate}</updateRate>
@@ -83,8 +91,8 @@ xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"
           <cameraInfoTopicName>/${sim_name}/${name}/camera_info</cameraInfoTopicName>
           <frameName>ardrone_base_${name}cam</frameName>
           <interface:camera name="${name}_camera_iface" />
-        </controller:gazebo_ros_depth_camera>
-      </sensor:camera>
+        </plugin-->
+      </sensor>
       <turnGravityOff>true</turnGravityOff>
       <material>PR2/Blue</material>
     </gazebo>

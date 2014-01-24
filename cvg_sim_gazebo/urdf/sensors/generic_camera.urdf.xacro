@@ -83,15 +83,14 @@ xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"
             <far>100</far>
           </clip>
         </camera>
-        <!--plugin name="${name}_camera_controller" filename="libgazebo_ros_depth_camera.so">
+        <plugin name="${name}_camera_controller" filename="libgazebo_ros_camera.so">
 	  <cameraName>/${sim_name}/${name}</cameraName>
           <alwaysOn>true</alwaysOn>
           <updateRate>${update_rate}</updateRate>
           <imageTopicName>/${sim_name}/${name}/image_raw</imageTopicName>
           <cameraInfoTopicName>/${sim_name}/${name}/camera_info</cameraInfoTopicName>
           <frameName>ardrone_base_${name}cam</frameName>
-          <interface:camera name="${name}_camera_iface" />
-        </plugin-->
+        </plugin>
       </sensor>
       <turnGravityOff>true</turnGravityOff>
       <material>PR2/Blue</material>

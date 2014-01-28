@@ -34,6 +34,12 @@
             <attenuation range="300"/>
             <direction xyz="-1 -1 -1"/>
         </light>
+        <light type="point" name="point_light_1" cast_shadows="false">
+            <origin pose='-4.000000 0.000000 2.000000 0.000000 -0.000000 0.000000'/>
+            <diffuse rgba='1.000000 1.000000 1.000000 1.000000'/>
+            <specular rgba='0.100000 0.100000 0.100000 1.000000'/>
+            <direction xyz='0.000000 0.000000 -1.000000'/>
+        </light>
         <model name="garching_kitchen" static="true">
             <link name="garching_kitchen_link">
                 <origin pose="0 0 0 0 0 0"/>
@@ -51,7 +57,7 @@
         </model>
         <model name="cvg_logo" static="true">
             <link name="cvg_logo_link">
-                <origin pose="-1.0 2.780 3.00 1.571 0.0 3.1416"/>
+                <origin pose="-1.0 -2.40 3.00 1.571 0.0 0.0"/>
                 <visual name="cvg_logo" cast_shadows="false">
                     <geometry>
                         <mesh filename="cvg_logo.dae" scale="5.45 0.95 0.5"/>

@@ -113,6 +113,7 @@ target_link_libraries(diffdrive_plugin_6w ${Boost_LIBRARIES})
 add_library(reset_plugin src/reset_plugin.cpp)
 
 add_library(hector_gazebo_ros_imu src/gazebo_ros_imu.cpp)
+add_dependencies(hector_gazebo_ros_imu cvg_sim_gazebo_plugins_gencpp)
 target_link_libraries(hector_gazebo_ros_imu ${Boost_LIBRARIES})
 
 add_library(hector_gazebo_ros_magnetic src/gazebo_ros_magnetic.cpp)
@@ -120,11 +121,15 @@ add_library(hector_gazebo_ros_gps src/gazebo_ros_gps.cpp)
 add_library(hector_gazebo_ros_sonar src/gazebo_ros_sonar.cpp)
 
 add_library(hector_gazebo_ros_baro src/gazebo_ros_baro.cpp)
+add_dependencies(hector_gazebo_ros_baro cvg_sim_msgs_gencpp)
 
 add_library(hector_gazebo_quadrotor_simple_controller src/quadrotor_simple_controller.cpp)
+add_dependencies(hector_gazebo_quadrotor_simple_controller ardrone_autonomy_gencpp)
 
 add_library(hector_gazebo_quadrotor_state_controller src/quadrotor_state_controller.cpp)
+add_dependencies(hector_gazebo_quadrotor_state_controller ardrone_autonomy_gencpp)
 target_link_libraries(hector_gazebo_quadrotor_state_controller ${image_transport_LIBRARIES})
+
 
 ## Declare a cpp executable
 add_executable(test_trajectory src/test_trajectory.cpp)

@@ -3,6 +3,12 @@
 
  <launch>
    <arg name="model" default="$(find cvg_sim_gazebo)/urdf/quadrotor.urdf.xacro"/>
+   <arg name="x" default="0"/>
+   <arg name="y" default="0"/>
+   <arg name="z" default="0.5"/>
+   <arg name="R" default="0"/>
+   <arg name="P" default="0"/>
+   <arg name="Y" default="0"/>
    <!-- send the robot XML to param server -->
    <param name="robot_description" command="$(find xacro)/xacro.py '$(arg model)'" />
    
@@ -10,7 +16,12 @@
    <node name="spawn_robot" pkg="gazebo_ros" type="spawn_model"
    args="-param robot_description
    -urdf
-   -z 0.5
+   -x '$(arg x)'
+   -y '$(arg y)'
+   -z '$(arg z)'
+   -R '$(arg R)'
+   -P '$(arg P)'
+   -Y '$(arg Y)'
    -model quadrotor"
      respawn="false" output="screen"/>
      

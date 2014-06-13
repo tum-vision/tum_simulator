@@ -16,24 +16,34 @@ Some packages are based on the tu-darmstadt-ros-pkg by Stefan Kohlbrecher, TU Da
 How to install the simulator:
 
 1. Create a workspace for the simulator
+
+    ```
     mkdir -p ~/tum_simulator_ws/src
     cd  ~/tum_simulator_ws/src
     catkin_init_workspace
-
+    ```
 2. Download dependencies
+
+    ```
     git clone https://github.com/AutonomyLab/ardrone_autonomy.git	# The AR.Drone ROS driver
     git clone https://github.com/tum-vision/tum_simulator.git
     cd ..
     rosdep install --from-paths src --ignore-src --rosdistro indigo -y
-
+    ```
 3. Build the simulator
-    catkin_make
 
+    ```
+    catkin_make
+    ```
 4. Source the environment
+
+    ```
     source devel/setup.bash
- 
+    ```
 How to run a simulation:
 
 1. Run a simulation by executing a launch file in cvg_sim_gazebo package:
-    roslaunch cvg_sim_gazebo ardrone_testworld.launch
 
+    ```
+    roslaunch cvg_sim_gazebo ardrone_testworld.launch
+    ```

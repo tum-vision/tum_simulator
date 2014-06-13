@@ -27,8 +27,8 @@
 //=================================================================================================
 
 #include <hector_gazebo_plugins/gazebo_ros_gps.h>
-#include "common/Events.hh"
-#include "physics/physics.hh"
+#include "gazebo/common/Events.hh"
+#include "gazebo/physics/physics.hh"
 
 static const double EARTH_RADIUS = 6371000.0;
 static const double DEFAULT_REFERENCE_LATITUDE  = 49.9;
@@ -46,7 +46,7 @@ GazeboRosGps::GazeboRosGps()
 // Destructor
 GazeboRosGps::~GazeboRosGps()
 {
-  event::Events::DisconnectWorldUpdateStart(updateConnection);
+  event::Events::DisconnectWorldUpdateBegin(updateConnection);
   node_handle_->shutdown();
   delete node_handle_;
 }
@@ -61,7 +61,7 @@ void GazeboRosGps::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
   if (!_sdf->HasElement("robotNamespace"))
     namespace_.clear();
   else
-    namespace_ = _sdf->GetElement("robotNamespace")->GetValueString() + "/";
+    namespace_ = _sdf->GetElement("robotNamespace")->Get<std::string>() + "/";
 
   if (!_sdf->HasElement("bodyName"))
   {
@@ -69,8 +69,8 @@ void GazeboRosGps::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
     link_name_ = link->GetName();
   }
   else {
-    link_name_ = _sdf->GetElement("bodyName")->GetValueString();
-    link = boost::shared_dynamic_cast<physics::Link>(world->GetEntity(link_name_));
+    link_name_ = _sdf->GetElement("bodyName")->Get<std::string>();
+    link = boost::dynamic_pointer_cast<physics::Link>(world->GetEntity(link_name_));
   }
 
   if (!link)
@@ -80,53 +80,53 @@ void GazeboRosGps::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
   }
 
   double update_rate = 4.0;
-  if (_sdf->HasElement("updateRate")) update_rate = _sdf->GetElement("updateRate")->GetValueDouble();
+  if (_sdf->HasElement("updateRate")) update_rate = _sdf->GetElement("updateRate")->Get<double>();
   update_period = update_rate > 0.0 ? 1.0/update_rate : 0.0;
 
   if (!_sdf->HasElement("frameId"))
     frame_id_ = link_name_;
   else
-    frame_id_ = _sdf->GetElement("frameId")->GetValueString();
+    frame_id_ = _sdf->GetElement("frameId")->Get<std::string>();
 
   if (!_sdf->HasElement("topicName"))
     fix_topic_ = "fix";
   else
-    fix_topic_ = _sdf->GetElement("topicName")->GetValueString();
+    fix_topic_ = _sdf->GetElement("topicName")->Get<std::string>();
 
   if (!_sdf->HasElement("velocityTopicName"))
     velocity_topic_ = "fix_velocity";
   else
-    velocity_topic_ = _sdf->GetElement("velocityTopicName")->GetValueString();
+    velocity_topic_ = _sdf->GetElement("velocityTopicName")->Get<std::string>();
 
   if (!_sdf->HasElement("referenceLatitude"))
     reference_latitude_ = DEFAULT_REFERENCE_LATITUDE;
   else
-    reference_latitude_ = _sdf->GetElement("referenceLatitude")->GetValueDouble();
+    reference_latitude_ = _sdf->GetElement("referenceLatitude")->Get<double>();
 
   if (!_sdf->HasElement("referenceLongitude"))
     reference_longitude_ = DEFAULT_REFERENCE_LONGITUDE;
   else
-    reference_longitude_ = _sdf->GetElement("referenceLongitude")->GetValueDouble();
+    reference_longitude_ = _sdf->GetElement("referenceLongitude")->Get<double>();
 
   if (!_sdf->HasElement("referenceHeading"))
     reference_heading_ = DEFAULT_REFERENCE_HEADING * M_PI/180.0;
   else
-    reference_heading_ = _sdf->GetElement("referenceLatitude")->GetValueDouble() * M_PI/180.0;
+    reference_heading_ = _sdf->GetElement("referenceLatitude")->Get<double>() * M_PI/180.0;
 
   if (!_sdf->HasElement("referenceAltitude"))
     reference_altitude_ = DEFAULT_REFERENCE_ALTITUDE;
   else
-    reference_altitude_ = _sdf->GetElement("referenceLatitude")->GetValueDouble();
+    reference_altitude_ = _sdf->GetElement("referenceLatitude")->Get<double>();
 
   if (!_sdf->HasElement("status"))
     status_ = sensor_msgs::NavSatStatus::STATUS_FIX;
   else
-    status_ = _sdf->GetElement("status")->GetValueUInt();
+    status_ = _sdf->GetElement("status")->Get<unsigned int>();
 
   if (!_sdf->HasElement("service"))
     service_ = sensor_msgs::NavSatStatus::SERVICE_GPS;
   else
-    service_ = _sdf->GetElement("service")->GetValueUInt();
+    service_ = _sdf->GetElement("service")->Get<unsigned int>();
 
   fix_.header.frame_id = frame_id_;
   fix_.status.status  = status_;

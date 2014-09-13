@@ -46,7 +46,7 @@
 #define HECTOR_GAZEBO_PLUGINS_QUADROTOR_SIMPLE_CONTROLLER_H
 
 #include "gazebo/gazebo.hh"
-#include "common/Plugin.hh"
+#include "gazebo/common/Plugin.hh"
 
 #include <ros/callback_queue.h>
 #include <ros/ros.h>

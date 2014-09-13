@@ -27,9 +27,9 @@
 //=================================================================================================
 
 #include <hector_gazebo_plugins/gazebo_ros_sonar.h>
-#include "common/Events.hh"
-#include "physics/physics.hh"
-#include "sensors/RaySensor.hh"
+#include "gazebo/common/Events.hh"
+#include "gazebo/physics/physics.hh"
+#include "gazebo/sensors/RaySensor.hh"
 
 #include <limits>
 
@@ -44,7 +44,7 @@ GazeboRosSonar::GazeboRosSonar()
 GazeboRosSonar::~GazeboRosSonar()
 {
   sensor_->SetActive(false);
-  event::Events::DisconnectWorldUpdateStart(updateConnection);
+  event::Events::DisconnectWorldUpdateBegin(updateConnection);
   node_handle_->shutdown();
   delete node_handle_;
 }
@@ -54,7 +54,7 @@ GazeboRosSonar::~GazeboRosSonar()
 void GazeboRosSonar::Load(sensors::SensorPtr _sensor, sdf::ElementPtr _sdf)
 {
   // Get then name of the parent sensor
-  sensor_ = boost::shared_dynamic_cast<sensors::RaySensor>(_sensor);
+  sensor_ = boost::dynamic_pointer_cast<sensors::RaySensor>(_sensor);
   if (!sensor_)
   {
     gzthrow("GazeboRosSonar requires a Ray Sensor as its parent");
@@ -69,17 +69,17 @@ void GazeboRosSonar::Load(sensors::SensorPtr _sensor, sdf::ElementPtr _sdf)
   if (!_sdf->HasElement("robotNamespace"))
     namespace_.clear();
   else
-    namespace_ = _sdf->GetElement("robotNamespace")->GetValueString() + "/";
+    namespace_ = _sdf->GetElement("robotNamespace")->Get<std::string>() + "/";
 
   if (!_sdf->HasElement("frameId"))
     frame_id_ = "";
   else
-    frame_id_ = _sdf->GetElement("frameId")->GetValueString();
+    frame_id_ = _sdf->GetElement("frameId")->Get<std::string>();
 
   if (!_sdf->HasElement("topicName"))
     topic_ = "sonar";
   else
-    topic_ = _sdf->GetElement("topicName")->GetValueString();
+    topic_ = _sdf->GetElement("topicName")->Get<std::string>();
 
   sensor_model_.Load(_sdf);
 

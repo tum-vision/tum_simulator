@@ -27,7 +27,7 @@
 //=================================================================================================
 
 #include <hector_gazebo_plugins/reset_plugin.h>
-#include "common/Events.hh"
+#include "gazebo/common/Events.hh"
 
 #include <std_msgs/String.h>
 

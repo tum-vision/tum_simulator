@@ -30,7 +30,7 @@
 #define HECTOR_GAZEBO_PLUGINS_GAZEBO_ROS_BARO_H
 
 #include "gazebo/gazebo.hh"
-#include "common/Plugin.hh"
+#include "gazebo/common/Plugin.hh"
 
 #include <ros/ros.h>
 #ifdef USE_MAV_MSGS

@@ -140,6 +140,14 @@ private:
   std::string sonar_topic_;
   std::string state_topic_;
 
+  std::string cam_out_topic_;
+  std::string cam_front_in_topic_;
+  std::string cam_bottom_in_topic_;
+
+  std::string cam_info_out_topic_;
+  std::string cam_info_front_in_topic_;
+  std::string cam_info_bottom_in_topic_;
+
   // extra parameters for robot control.
   bool m_isFlying;
   bool m_takeoff;

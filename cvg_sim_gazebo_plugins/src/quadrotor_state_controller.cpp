@@ -13,8 +13,8 @@
 
 
 #include <hector_quadrotor_controller/quadrotor_state_controller.h>
-#include "common/Events.hh"
-#include "physics/physics.hh"
+#include "gazebo/common/Events.hh"
+#include "gazebo/physics/physics.hh"
 
 #include <cmath>
 
@@ -36,7 +36,7 @@ GazeboQuadrotorStateController::GazeboQuadrotorStateController()
 // Destructor
 GazeboQuadrotorStateController::~GazeboQuadrotorStateController()
 {
-  event::Events::DisconnectWorldUpdateStart(updateConnection);
+  event::Events::DisconnectWorldUpdateBegin(updateConnection);
 
   node_handle_->shutdown();
   delete node_handle_;
@@ -52,47 +52,47 @@ void GazeboQuadrotorStateController::Load(physics::ModelPtr _model, sdf::Element
   if (!_sdf->HasElement("robotNamespace"))
     namespace_.clear();
   else
-    namespace_ = _sdf->GetElement("robotNamespace")->GetValueString() + "/";
+    namespace_ = _sdf->GetElement("robotNamespace")->Get<std::string>() + "/";
 
   if (!_sdf->HasElement("topicName"))
     velocity_topic_ = "cmd_vel";
   else
-    velocity_topic_ = _sdf->GetElement("topicName")->GetValueString();
+    velocity_topic_ = _sdf->GetElement("topicName")->Get<std::string>();
 
   if (!_sdf->HasElement("takeoffTopic"))
     takeoff_topic_ = "/ardrone/takeoff";
   else
-    takeoff_topic_ = _sdf->GetElement("takeoffTopic")->GetValueString();
+    takeoff_topic_ = _sdf->GetElement("takeoffTopic")->Get<std::string>();
 
-  if (!_sdf->HasElement("/ardrone/land"))
+  if (!_sdf->HasElement("landTopic"))
     land_topic_ = "/ardrone/land";
   else
-    land_topic_ = _sdf->GetElement("landTopic")->GetValueString();
+    land_topic_ = _sdf->GetElement("landTopic")->Get<std::string>();
 
   if (!_sdf->HasElement("resetTopic"))
     reset_topic_ = "/ardrone/reset";
   else
-    reset_topic_ = _sdf->GetElement("resetTopic")->GetValueString();
+    reset_topic_ = _sdf->GetElement("resetTopic")->Get<std::string>();
 
   if (!_sdf->HasElement("navdataTopic"))
     navdata_topic_ = "/ardrone/navdata";
   else
-    navdata_topic_ = _sdf->GetElement("navdataTopic")->GetValueString();
+    navdata_topic_ = _sdf->GetElement("navdataTopic")->Get<std::string>();
 
   if (!_sdf->HasElement("imuTopic"))
     imu_topic_.clear();
   else
-    imu_topic_ = _sdf->GetElement("imuTopic")->GetValueString();
+    imu_topic_ = _sdf->GetElement("imuTopic")->Get<std::string>();
 
   if (!_sdf->HasElement("sonarTopic"))
     sonar_topic_.clear();
   else
-    sonar_topic_ = _sdf->GetElement("sonarTopic")->GetValueString();
+    sonar_topic_ = _sdf->GetElement("sonarTopic")->Get<std::string>();
 
   if (!_sdf->HasElement("stateTopic"))
     state_topic_.clear();
   else
-    state_topic_ = _sdf->GetElement("stateTopic")->GetValueString();
+    state_topic_ = _sdf->GetElement("stateTopic")->Get<std::string>();
 
   if (!_sdf->HasElement("bodyName"))
   {
@@ -100,9 +100,39 @@ void GazeboQuadrotorStateController::Load(physics::ModelPtr _model, sdf::Element
     link_name_ = link->GetName();
   }
   else {
-    link_name_ = _sdf->GetElement("bodyName")->GetValueString();
-    link = boost::shared_dynamic_cast<physics::Link>(world->GetEntity(link_name_));
+    link_name_ = _sdf->GetElement("bodyName")->Get<std::string>();
+    link = boost::dynamic_pointer_cast<physics::Link>(world->GetEntity(link_name_));
   }
+
+  if (!_sdf->HasElement("camOutTopic"))
+    cam_out_topic_ = "/ardrone/image_raw";
+  else
+    cam_out_topic_ = _sdf->GetElement("camOutTopic")->Get<std::string>();
+
+  if (!_sdf->HasElement("camFrontTopic"))
+    cam_front_in_topic_ = "/ardrone/front/image_raw";
+  else
+    cam_front_in_topic_ = _sdf->GetElement("camFrontTopic")->Get<std::string>();
+
+  if (!_sdf->HasElement("camBottomTopic"))
+    cam_bottom_in_topic_ = "/ardrone/bottom/image_raw";
+  else
+    cam_bottom_in_topic_ = _sdf->GetElement("camBottomTopic")->Get<std::string>();
+
+  if (!_sdf->HasElement("camInfoOutTopic"))
+    cam_info_out_topic_ = "/ardrone/camera_info";
+  else
+    cam_info_out_topic_ = _sdf->GetElement("camInfoOutTopic")->Get<std::string>();
+
+  if (!_sdf->HasElement("camInfoFrontTopic"))
+    cam_info_front_in_topic_ = "/ardrone/front/camera_info";
+  else
+    cam_info_front_in_topic_ = _sdf->GetElement("camInfoFrontTopic")->Get<std::string>();
+
+  if (!_sdf->HasElement("camInfoBottomTopic"))
+    cam_info_bottom_in_topic_ = "/ardrone/bottom/camera_info";
+  else
+    cam_info_bottom_in_topic_ = _sdf->GetElement("camInfoBottomTopic")->Get<std::string>();
 
   if (!link)
   {
@@ -204,39 +234,33 @@ void GazeboQuadrotorStateController::Load(physics::ModelPtr _model, sdf::Element
   toggleCam_service = node_handle_->advertiseService(toggleCam_ops);
 
   // camera image data
-  std::string cam_out_topic  = "/ardrone/image_raw";
-  std::string cam_front_in_topic = "/ardrone/front/image_raw";
-  std::string cam_bottom_in_topic = "/ardrone/bottom/image_raw";
   std::string in_transport = "raw";
 
   camera_it_ = new image_transport::ImageTransport(*node_handle_);
-  camera_publisher_ = camera_it_->advertise(cam_out_topic, 1);
+  camera_publisher_ = camera_it_->advertise(cam_out_topic_, 1);
 
   camera_front_subscriber_ = camera_it_->subscribe(
-    cam_front_in_topic, 1,
+    cam_front_in_topic_, 1,
     boost::bind(&GazeboQuadrotorStateController::CameraFrontCallback, this, _1),
     ros::VoidPtr(), in_transport);
 
   camera_bottom_subscriber_ = camera_it_->subscribe(
-    cam_bottom_in_topic, 1,
+    cam_bottom_in_topic_, 1,
     boost::bind(&GazeboQuadrotorStateController::CameraBottomCallback, this, _1),
     ros::VoidPtr(), in_transport);
 
   // camera image data
-  std::string cam_info_out_topic  = "/ardrone/camera_info";
-  std::string cam_info_front_in_topic = "/ardrone/front/camera_info";
-  std::string cam_info_bottom_in_topic = "/ardrone/bottom/camera_info";
 
-  camera_info_publisher_ = node_handle_->advertise<sensor_msgs::CameraInfo>(cam_info_out_topic,1);
+  camera_info_publisher_ = node_handle_->advertise<sensor_msgs::CameraInfo>(cam_info_out_topic_,1);
 
   ros::SubscribeOptions cam_info_front_ops = ros::SubscribeOptions::create<sensor_msgs::CameraInfo>(
-    cam_info_front_in_topic, 1,
+    cam_info_front_in_topic_, 1,
     boost::bind(&GazeboQuadrotorStateController::CameraInfoFrontCallback, this, _1),
     ros::VoidPtr(), &callback_queue_);
   camera_info_front_subscriber_ = node_handle_->subscribe(cam_info_front_ops);
 
   ros::SubscribeOptions cam_info_bottom_ops = ros::SubscribeOptions::create<sensor_msgs::CameraInfo>(
-    cam_info_bottom_in_topic, 1,
+    cam_info_bottom_in_topic_, 1,
     boost::bind(&GazeboQuadrotorStateController::CameraInfoBottomCallback, this, _1),
     ros::VoidPtr(), &callback_queue_);
   camera_info_bottom_subscriber_ = node_handle_->subscribe(cam_info_bottom_ops);

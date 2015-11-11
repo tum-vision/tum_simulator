@@ -15,7 +15,7 @@
 #define HECTOR_GAZEBO_PLUGINS_quadrotor_state_controller_H
 
 #include "gazebo/gazebo.hh"
-#include "common/Plugin.hh"
+#include "gazebo/common/Plugin.hh"
 
 #include <ros/callback_queue.h>
 #include <ros/ros.h>
@@ -139,6 +139,14 @@ private:
   std::string imu_topic_;
   std::string sonar_topic_;
   std::string state_topic_;
+
+  std::string cam_out_topic_;
+  std::string cam_front_in_topic_;
+  std::string cam_bottom_in_topic_;
+
+  std::string cam_info_out_topic_;
+  std::string cam_info_front_in_topic_;
+  std::string cam_info_bottom_in_topic_;
 
   // extra parameters for robot control.
   bool m_isFlying;

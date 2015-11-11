@@ -64,8 +64,8 @@
 #include <ros/advertise_options.h>
 #endif
 
-#include "common/Plugin.hh"
-#include "common/Time.hh"
+#include "gazebo/common/Plugin.hh"
+#include "gazebo/common/Time.hh"
 
 #include <ros/ros.h>
 #include <boost/thread/mutex.hpp>

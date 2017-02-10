@@ -1,2 +1,2 @@
-tum_simulator ported to Hydro
+tum_simulator ported to Kinetic (Gazebo 7)
 =============

@@ -1,4 +1,4 @@
-
+DEPRECATED DOCUMENT. NEEDS TO BE UPDATED.
 
 These packages are used to simulate the flying robot Ardrone in ROS environment using gazebo simulator. Totally they are 4 packages. Their functions are descript as below:
 

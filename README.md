@@ -1,8 +1,6 @@
-## tum_simulator ported to Kinetic ##.  
+## tum_simulator ported to Kinetic.  
 
 Tested on Ubuntu 16.04.1, ROS Kinetic and using Gazebo 7.  
-
-=============
 
 These packages are used to simulate the flying robot Ardrone in ROS environment using gazebo simulator. Totally they are 4 packages. Their functions are descript as below:  
 

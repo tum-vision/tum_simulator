@@ -1,14 +1,22 @@
 <?xml version="1.0"?>
 
 <robot xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor"
-xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller"
-xmlns:xacro="http://ros.org/wiki/xacro">
+       xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller"
+       xmlns:xacro="http://ros.org/wiki/xacro">
 
   <xacro:include filename="$(find cvg_sim_gazebo_plugins)/urdf/quadrotor_plugins.urdf.xacro" />
 
   <!-- Main quadrotor link -->
   <xacro:macro name="quadrotor_base_macro">
-    <link name="base_link">
+
+    <!-- Dump Link with no inertia -->
+    <link name="base_link"/>
+    <joint name="body_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="body_link"/>
+    </joint>
+
+    <link name="body_link">
       <inertial>
         <mass value="1.477" />
         <origin xyz="0 0 0" />
@@ -30,9 +38,7 @@ xmlns:xacro="http://ros.org/wiki/xacro">
       </collision>
     </link>
 
-
-
-    <gazebo reference="base_link">
+    <gazebo reference="body_link">
       <turnGravityOff>false</turnGravityOff>
     </gazebo>
 

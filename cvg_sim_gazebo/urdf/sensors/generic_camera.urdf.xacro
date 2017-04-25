@@ -90,7 +90,7 @@ xmlns:xacro="http://ros.org/wiki/xacro">
           <frameName>ardrone_base_${name}cam</frameName>
         </plugin>
       </sensor>
-      <turnGravityOff>true</turnGravityOff>
+      <turnGravityOff>false</turnGravityOff>
       <material>PR2/Blue</material>
     </gazebo>
     </xacro:macro>

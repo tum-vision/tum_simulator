@@ -2,15 +2,13 @@
 
 <robot xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor"
 xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller"
-xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"
-  xmlns:xacro="http://ros.org/wiki/xacro"
-  >  
+xmlns:xacro="http://ros.org/wiki/xacro">  
   
-    <property name="M_PI" value="3.1415926535897931" />
+    <xacro:property name="M_PI" value="3.1415926535897931" />
   
     <xacro:macro name="generic_camera" params="name sim_name parent *origin update_rate res_x res_y image_format hfov">
       <joint name="${name}_joint" type="fixed">
-        <insert_block name="origin" />
+        <xacro:insert_block name="origin" />
         <parent link="${parent}"/>
         <child link="${name}_link"/>
       </joint>
@@ -92,7 +90,7 @@ xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"
           <frameName>ardrone_base_${name}cam</frameName>
         </plugin>
       </sensor>
-      <turnGravityOff>true</turnGravityOff>
+      <turnGravityOff>false</turnGravityOff>
       <material>PR2/Blue</material>
     </gazebo>
     </xacro:macro>

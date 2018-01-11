@@ -27,8 +27,8 @@
 //=================================================================================================
 
 #include <hector_quadrotor_gazebo_plugins/gazebo_ros_baro.h>
-#include "common/Events.hh"
-#include "physics/physics.hh"
+#include "gazebo/common/Events.hh"
+#include "gazebo/physics/physics.hh"
 
 static const double DEFAULT_ELEVATION = 0.0;
 static const double DEFAULT_QNH       = 1013.25;
@@ -43,7 +43,7 @@ GazeboRosBaro::GazeboRosBaro()
 // Destructor
 GazeboRosBaro::~GazeboRosBaro()
 {
-  event::Events::DisconnectWorldUpdateStart(updateConnection);
+  event::Events::DisconnectWorldUpdateBegin(updateConnection);
 
   node_handle_->shutdown();
   delete node_handle_;
@@ -59,7 +59,7 @@ void GazeboRosBaro::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
   if (!_sdf->HasElement("robotNamespace"))
     namespace_.clear();
   else
-    namespace_ = _sdf->GetElement("robotNamespace")->GetValueString() + "/";
+    namespace_ = _sdf->GetElement("robotNamespace")->GetValue()->GetAsString() + "/";
 
   if (!_sdf->HasElement("bodyName"))
   {
@@ -67,8 +67,8 @@ void GazeboRosBaro::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
     link_name_ = link->GetName();
   }
   else {
-    link_name_ = _sdf->GetElement("bodyName")->GetValueString();
-    link = boost::shared_dynamic_cast<physics::Link>(world->GetEntity(link_name_));
+    link_name_ = _sdf->GetElement("bodyName")->GetValue()->GetAsString();
+    link = boost::dynamic_pointer_cast<physics::Link>(world->GetEntity(link_name_));
   }
 
   if (!link)
@@ -78,33 +78,33 @@ void GazeboRosBaro::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
   }
 
   double update_rate = 0.0;
-  if (_sdf->HasElement("updateRate")) update_rate = _sdf->GetElement("updateRate")->GetValueDouble();
+  if (_sdf->HasElement("updateRate")) _sdf->GetElement("updateRate")->GetValue()->Get(update_rate);
   update_period = update_rate > 0.0 ? 1.0/update_rate : 0.0;
 
   if (!_sdf->HasElement("frameId"))
     frame_id_ = link->GetName();
   else
-    frame_id_ = _sdf->GetElement("frameId")->GetValueString();
+    frame_id_ = _sdf->GetElement("frameId")->GetValue()->GetAsString();
 
   if (!_sdf->HasElement("topicName"))
     height_topic_ = "pressure_height";
   else
-    height_topic_ = _sdf->GetElement("topicName")->GetValueString();
+    height_topic_ = _sdf->GetElement("topicName")->GetValue()->GetAsString();
 
   if (!_sdf->HasElement("altimeterTopicName"))
     altimeter_topic_ = "altimeter";
   else
-    altimeter_topic_ = _sdf->GetElement("altimeterTopicName")->GetValueString();
+    altimeter_topic_ = _sdf->GetElement("altimeterTopicName")->GetValue()->GetAsString();
 
   if (!_sdf->HasElement("elevation"))
     elevation_ = DEFAULT_ELEVATION;
   else
-    elevation_ = _sdf->GetElement("elevation")->GetValueDouble();
+    _sdf->GetElement("elevation")->GetValue()->Get(elevation_);
 
   if (!_sdf->HasElement("qnh"))
     qnh_ = DEFAULT_QNH;
   else
-    qnh_ = _sdf->GetElement("qnh")->GetValueDouble();
+    _sdf->GetElement("qnh")->GetValue()->Get(qnh_);
 
   sensor_model_.Load(_sdf);
   height_.header.frame_id = frame_id_;

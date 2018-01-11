@@ -15,6 +15,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   sensor_msgs
   std_msgs
+  cvg_sim_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -92,7 +93,7 @@ catkin_package(
   reset_plugin 
   hector_gazebo_ros_baro 
   hector_gazebo_quadrotor_simple_controller hector_gazebo_quadrotor_state_controller
- CATKIN_DEPENDS image_transport
+ CATKIN_DEPENDS image_transport cvg_sim_msgs
  DEPENDS system_lib
 )
 

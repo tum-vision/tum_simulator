@@ -20,7 +20,7 @@ How to run a simulation:
 0. Install dependencies:  
 
     * Hector quadrotor: As an example you can install all hector suite running `sudo apt-get install ros-<your_version>-hector-*`  
-    * ardrone_autonomy: run udo apt-get install ros-<your_version>-ardrone_autonomy`  
+    * ardrone_autonomy: run `sudo apt-get install ros-<your_version>-ardrone_autonomy`  
 
 1. Download this `tum_simulator` package.  
 

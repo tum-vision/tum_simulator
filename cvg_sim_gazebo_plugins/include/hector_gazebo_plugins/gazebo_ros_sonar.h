@@ -29,8 +29,8 @@
 #ifndef HECTOR_GAZEBO_PLUGINS_GAZEBO_ROS_SONAR_H
 #define HECTOR_GAZEBO_PLUGINS_GAZEBO_ROS_SONAR_H
 
-#include "common/Plugin.hh"
-#include "common/Time.hh"
+#include "gazebo/common/Plugin.hh"
+#include "gazebo/common/Time.hh"
 
 #include <ros/callback_queue.h>
 #include <ros/ros.h>
@@ -50,7 +50,7 @@ public:
 protected:
   virtual void Load(sensors::SensorPtr _sensor, sdf::ElementPtr _sdf);
   virtual void Reset();
-  virtual void Update();
+  virtual void OnUpdate(const gazebo::common::UpdateInfo &info);
 
 private:
   /// \brief The parent World

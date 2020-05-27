@@ -15,7 +15,7 @@
 #define HECTOR_GAZEBO_PLUGINS_quadrotor_state_controller_H
 
 #include "gazebo/gazebo.hh"
-#include "common/Plugin.hh"
+#include "gazebo/common/Plugin.hh"
 
 #include <ros/callback_queue.h>
 #include <ros/ros.h>
@@ -120,8 +120,8 @@ private:
   bool setLedAnimationCallback(ardrone_autonomy::LedAnim::Request& request, ardrone_autonomy::LedAnim::Response& response);
 
   ros::Time state_stamp;
-  math::Pose pose;
-  math::Vector3 euler, velocity, acceleration, angular_velocity;
+  ignition::math::Pose3d pose;
+  ignition::math::Vector3d euler, velocity, acceleration, angular_velocity;
   double robot_altitude;
   // 0: Unknown, 1: Init, 2: Landed, 3: Flying, 4: Hovering, 5: Test
   // 6: Taking off, 7: Goto Fix Point, 8: Landing, 9: Looping

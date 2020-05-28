@@ -93,7 +93,7 @@ xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"
         </plugin>
       </sensor>
       <turnGravityOff>true</turnGravityOff>
-      <material>PR2/Blue</material>
+      <material>Gazebo/Blue</material>
     </gazebo>
     </xacro:macro>
   </robot>

@@ -46,7 +46,7 @@
 #define HECTOR_GAZEBO_PLUGINS_QUADROTOR_SIMPLE_CONTROLLER_H
 
 #include "gazebo/gazebo.hh"
-#include "common/Plugin.hh"
+#include "gazebo/common/Plugin.hh"
 
 #include <ros/callback_queue.h>
 #include <ros/ros.h>
@@ -112,8 +112,8 @@ private:
   void NavdataCallback(const ardrone_autonomy::NavdataConstPtr& msg);
 
   ros::Time state_stamp;
-  math::Pose pose;
-  math::Vector3 euler, velocity, acceleration, angular_velocity;
+  ignition::math::Pose3d pose;
+  ignition::math::Vector3d euler, velocity, acceleration, angular_velocity;
 
   std::string link_name_;
   std::string namespace_;
@@ -155,7 +155,7 @@ private:
     PIDController velocity_z;
   } controllers_;
 
-  math::Vector3 inertia;
+  ignition::math::Vector3d inertia;
   double mass;
 
   /// \brief save last_time

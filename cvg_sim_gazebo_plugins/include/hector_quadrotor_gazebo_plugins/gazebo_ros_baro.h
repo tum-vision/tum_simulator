@@ -30,7 +30,7 @@
 #define HECTOR_GAZEBO_PLUGINS_GAZEBO_ROS_BARO_H
 
 #include "gazebo/gazebo.hh"
-#include "common/Plugin.hh"
+#include "gazebo/common/Plugin.hh"
 
 #include <ros/ros.h>
 #ifdef USE_MAV_MSGS
@@ -54,7 +54,7 @@ public:
 protected:
   virtual void Load(physics::ModelPtr _model, sdf::ElementPtr _sdf);
   virtual void Reset();
-  virtual void Update();
+  virtual void OnUpdate(const gazebo::common::UpdateInfo &info);
 
 private:
   /// \brief The parent World

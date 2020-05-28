@@ -29,8 +29,8 @@
 #ifndef HECTOR_GAZEBO_PLUGINS_GAZEBO_ROS_GPS_H
 #define HECTOR_GAZEBO_PLUGINS_GAZEBO_ROS_GPS_H
 
-#include "common/Plugin.hh"
-#include "common/Time.hh"
+#include "gazebo/common/Plugin.hh"
+#include "gazebo/common/Time.hh"
 
 #include <ros/ros.h>
 #include <sensor_msgs/NavSatFix.h>
@@ -49,7 +49,7 @@ public:
 protected:
   virtual void Load(physics::ModelPtr _model, sdf::ElementPtr _sdf);
   virtual void Reset();
-  virtual void Update();
+  virtual void OnUpdate(const gazebo::common::UpdateInfo &info);
 
 private:
   /// \brief The parent World

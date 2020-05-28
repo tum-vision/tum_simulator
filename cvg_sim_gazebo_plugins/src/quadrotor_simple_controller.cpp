@@ -103,7 +103,6 @@ void GazeboQuadrotorSimpleController::Load(physics::ModelPtr _model, sdf::Elemen
   }
   else {
     link_name_ = _sdf->GetElement("bodyName")->Get<std::string>();
-    ROS_ERROR("CALLED FROM QUADROTOR_SIMPLE_CONTROLLER.CPP,CHANGED BY SURAJ MAY CAUSE ERRORS");
     link = _model->GetLink(link_name_);
   }
 

@@ -68,7 +68,6 @@ void GazeboRosBaro::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
   }
   else {
     link_name_ = _sdf->GetElement("bodyName")->Get<std::string>();
-    ROS_ERROR("CALLED FROM GAZEBO_ROS_BARO.CPP,CHANGED BY SURAJ MAY CAUSE ERRORS");
     link = _model->GetLink(link_name_);
   }
 

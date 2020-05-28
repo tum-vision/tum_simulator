@@ -95,7 +95,6 @@ void DiffDrivePlugin6W::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
   }
   else {
     linkName = _sdf->GetElement("bodyName")->Get<std::string>();
-    ROS_ERROR("CALLED FROM DIFFDRIVE_PLUGIN_6W.CPP,CHANGED BY SURAJ MAY CAUSE ERRORS");
     link = _model->GetLink(linkName);
   }
 

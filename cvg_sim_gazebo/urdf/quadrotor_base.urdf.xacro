@@ -2,12 +2,9 @@
 
 <robot xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor"
 xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller"
-xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"
-xmlns:xacro="http://ros.org/wiki/xacro"
->
+xmlns:xacro="http://ros.org/wiki/xacro">
 
-  <include filename="$(find cvg_sim_gazebo_plugins)/urdf/quadrotor_plugins.urdf.xacro" />
-  <property name="pi" value="3.1415926535897931" />
+  <xacro:include filename="$(find cvg_sim_gazebo_plugins)/urdf/quadrotor_plugins.urdf.xacro" />
 
   <!-- Main quadrotor link -->
   <xacro:macro name="quadrotor_base_macro">

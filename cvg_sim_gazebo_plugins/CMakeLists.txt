@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(cvg_sim_gazebo_plugins)
 
+set (CMAKE_CXX_STANDARD 11)
+
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
@@ -13,6 +15,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   sensor_msgs
   std_msgs
+  cvg_sim_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -86,8 +89,11 @@ generate_messages(
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-  LIBRARIES diffdrive_plugin_6w reset_plugin hector_gazebo_ros_imu hector_gazebo_ros_magnetic hector_gazebo_ros_gps hector_gazebo_ros_sonar hector_gazebo_ros_baro hector_gazebo_quadrotor_simple_controller hector_gazebo_quadrotor_state_controller
- CATKIN_DEPENDS image_transport
+  LIBRARIES 
+  reset_plugin 
+  hector_gazebo_ros_baro 
+  hector_gazebo_quadrotor_simple_controller hector_gazebo_quadrotor_state_controller
+ CATKIN_DEPENDS image_transport cvg_sim_msgs
  DEPENDS system_lib
 )
 
@@ -107,18 +113,8 @@ include_directories(
 )
 
 ## Declare a cpp library
-add_library(diffdrive_plugin_6w src/diffdrive_plugin_6w.cpp)
-target_link_libraries(diffdrive_plugin_6w ${Boost_LIBRARIES})
 
 add_library(reset_plugin src/reset_plugin.cpp)
-
-add_library(hector_gazebo_ros_imu src/gazebo_ros_imu.cpp)
-add_dependencies(hector_gazebo_ros_imu cvg_sim_gazebo_plugins_gencpp)
-target_link_libraries(hector_gazebo_ros_imu ${Boost_LIBRARIES})
-
-add_library(hector_gazebo_ros_magnetic src/gazebo_ros_magnetic.cpp)
-add_library(hector_gazebo_ros_gps src/gazebo_ros_gps.cpp)
-add_library(hector_gazebo_ros_sonar src/gazebo_ros_sonar.cpp)
 
 add_library(hector_gazebo_ros_baro src/gazebo_ros_baro.cpp)
 add_dependencies(hector_gazebo_ros_baro cvg_sim_msgs_gencpp)

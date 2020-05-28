@@ -30,7 +30,7 @@
 #define HECTOR_GAZEBO_PLUGINS_SENSOR_MODEL_H
 
 #include <sdf/sdf.hh>
-#include <math/gzmath.hh>
+#include <gazebo/math/gzmath.hh>
 
 namespace gazebo {
 
@@ -97,10 +97,10 @@ void SensorModel_<T>::Load(sdf::ElementPtr _sdf, const std::string& prefix)
     _gaussian_noise  = _sdf->GetElement(prefix + "GaussianNoise");
   }
 
-  if (_offset          && !_offset->GetValue()->Get(offset))                   offset = _offset->GetValueDouble();
-  if (_drift           && !_drift->GetValue()->Get(drift))                     drift = _drift->GetValueDouble();
-  if (_drift_frequency && !_drift_frequency->GetValue()->Get(drift_frequency)) drift_frequency = _drift_frequency->GetValueDouble();
-  if (_gaussian_noise  && !_gaussian_noise->GetValue()->Get(gaussian_noise))   gaussian_noise = _gaussian_noise->GetValueDouble();
+  if (_offset          && !_offset->GetValue()->Get(offset))                   _offset->GetValue()->Get(offset);
+  if (_drift           && !_drift->GetValue()->Get(drift))                     _drift->GetValue()->Get(drift);
+  if (_drift_frequency && !_drift_frequency->GetValue()->Get(drift_frequency)) _drift_frequency->GetValue()->Get(drift_frequency);
+  if (_gaussian_noise  && !_gaussian_noise->GetValue()->Get(gaussian_noise))   _gaussian_noise->GetValue()->Get(gaussian_noise);
 }
 
 namespace {

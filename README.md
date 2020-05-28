@@ -9,7 +9,7 @@ How to run a simulation:
 * `cd catkin_ws/src/`
 * `catkin_init_workspace`
 2. Clone the required repositories
-* `git clone https://github.com/surajmahangade/tum_simulator_melodic.git`
+* `git clone https://github.com/surajmahangade/tum_simulator.git`
 * `git clone https://github.com/dsapandora/ardrone_autonomy.git`
 3. Build
 * `cd ~/catkin_ws`

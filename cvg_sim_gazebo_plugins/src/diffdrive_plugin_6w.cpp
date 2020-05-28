@@ -34,8 +34,8 @@
 #include <assert.h>
 
 #include <hector_gazebo_plugins/diffdrive_plugin_6w.h>
-#include "common/Events.hh"
-#include "physics/physics.hh"
+#include "gazebo/common/Events.hh"
+#include "gazebo/physics/physics.hh"
 
 #include <ros/ros.h>
 #include <tf/transform_broadcaster.h>
@@ -43,6 +43,7 @@
 #include <geometry_msgs/Twist.h>
 #include <nav_msgs/Odometry.h>
 #include <boost/bind.hpp>
+//#include <physics/physics.hh"
 
 namespace gazebo {
 
@@ -65,7 +66,6 @@ DiffDrivePlugin6W::DiffDrivePlugin6W()
 // Destructor
 DiffDrivePlugin6W::~DiffDrivePlugin6W()
 {
-  event::Events::DisconnectWorldUpdateStart(updateConnection);
   delete transform_broadcaster_;
   rosnode_->shutdown();
   callback_queue_thread_.join();
@@ -81,12 +81,12 @@ void DiffDrivePlugin6W::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
   if (!_sdf->HasElement("robotNamespace"))
     robotNamespace.clear();
   else
-    robotNamespace = _sdf->GetElement("robotNamespace")->GetValueString() + "/";
+    robotNamespace = _sdf->GetElement("robotNamespace")->Get<std::string>() + "/";
 
   if (!_sdf->HasElement("topicName"))
     topicName = "cmd_vel";
   else
-    topicName = _sdf->GetElement("topicName")->GetValueString();
+    topicName = _sdf->GetElement("topicName")->Get<std::string>();
 
   if (!_sdf->HasElement("bodyName"))
   {
@@ -94,8 +94,9 @@ void DiffDrivePlugin6W::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
     linkName = link->GetName();
   }
   else {
-    linkName = _sdf->GetElement("bodyName")->GetValueString();
-    link = boost::shared_dynamic_cast<physics::Link>(world->GetEntity(_sdf->GetElement("bodyName")->GetValueString()));
+    linkName = _sdf->GetElement("bodyName")->Get<std::string>();
+    ROS_ERROR("CALLED FROM DIFFDRIVE_PLUGIN_6W.CPP,CHANGED BY SURAJ MAY CAUSE ERRORS");
+    link = _model->GetLink(linkName);
   }
 
   // assert that the body by linkName exists
@@ -105,12 +106,12 @@ void DiffDrivePlugin6W::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
     return;
   }
 
-  if (_sdf->HasElement("frontLeftJoint"))  joints[FRONT_LEFT]  = _model->GetJoint(_sdf->GetElement("frontLeftJoint")->GetValueString());
-  if (_sdf->HasElement("frontRightJoint")) joints[FRONT_RIGHT] = _model->GetJoint(_sdf->GetElement("frontRightJoint")->GetValueString());
-  if (_sdf->HasElement("midLeftJoint"))    joints[MID_LEFT]    = _model->GetJoint(_sdf->GetElement("midLeftJoint")->GetValueString());
-  if (_sdf->HasElement("midRightJoint"))   joints[MID_RIGHT]   = _model->GetJoint(_sdf->GetElement("midRightJoint")->GetValueString());
-  if (_sdf->HasElement("rearLeftJoint"))   joints[REAR_LEFT]   = _model->GetJoint(_sdf->GetElement("rearLeftJoint")->GetValueString());
-  if (_sdf->HasElement("rearRightJoint"))  joints[REAR_RIGHT]  = _model->GetJoint(_sdf->GetElement("rearRightJoint")->GetValueString());
+  if (_sdf->HasElement("frontLeftJoint"))  joints[FRONT_LEFT]  = _model->GetJoint(_sdf->GetElement("frontLeftJoint")->Get<std::string>());
+  if (_sdf->HasElement("frontRightJoint")) joints[FRONT_RIGHT] = _model->GetJoint(_sdf->GetElement("frontRightJoint")->Get<std::string>());
+  if (_sdf->HasElement("midLeftJoint"))    joints[MID_LEFT]    = _model->GetJoint(_sdf->GetElement("midLeftJoint")->Get<std::string>());
+  if (_sdf->HasElement("midRightJoint"))   joints[MID_RIGHT]   = _model->GetJoint(_sdf->GetElement("midRightJoint")->Get<std::string>());
+  if (_sdf->HasElement("rearLeftJoint"))   joints[REAR_LEFT]   = _model->GetJoint(_sdf->GetElement("rearLeftJoint")->Get<std::string>());
+  if (_sdf->HasElement("rearRightJoint"))  joints[REAR_RIGHT]  = _model->GetJoint(_sdf->GetElement("rearRightJoint")->Get<std::string>());
 
   if (!joints[FRONT_LEFT])  ROS_FATAL("diffdrive_plugin_6w error: The controller couldn't get front left joint");
   if (!joints[FRONT_RIGHT]) ROS_FATAL("diffdrive_plugin_6w error: The controller couldn't get front right joint");
@@ -122,17 +123,17 @@ void DiffDrivePlugin6W::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
   if (!_sdf->HasElement("wheelSeparation"))
     wheelSep = 0.34;
   else
-    wheelSep = _sdf->GetElement("wheelSeparation")->GetValueDouble();
+    wheelSep = _sdf->GetElement("wheelSeparation")->Get<double>();
 
   if (!_sdf->HasElement("wheelDiameter"))
     wheelDiam = 0.15;
   else
-    wheelDiam = _sdf->GetElement("wheelDiameter")->GetValueDouble();
+    wheelDiam = _sdf->GetElement("wheelDiameter")->Get<double>();
 
   if (!_sdf->HasElement("torque"))
     torque = 10.0;
   else
-    torque = _sdf->GetElement("torque")->GetValueDouble();
+    torque = _sdf->GetElement("torque")->Get<double>();
 
   // start ros node
   if (!ros::isInitialized())
@@ -162,8 +163,11 @@ void DiffDrivePlugin6W::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
   // New Mechanism for Updating every World Cycle
   // Listen to the update event. This event is broadcast every
   // simulation iteration.
-  updateConnection = event::Events::ConnectWorldUpdateBegin(
-      boost::bind(&DiffDrivePlugin6W::Update, this));
+  //updateConnection = event::Events::ConnectWorldUpdateBegin(
+    //  boost::bind(&DiffDrivePlugin6W::Update, this));
+
+  updateConnection = gazebo::event::Events::ConnectWorldUpdateBegin(
+        boost::bind(&DiffDrivePlugin6W::OnUpdate, this, _1));
 }
 
 // Initialize the controller
@@ -175,7 +179,7 @@ void DiffDrivePlugin6W::Reset()
     wheelSpeed[i] = 0;
   }
 
-  prevUpdateTime = world->GetSimTime();
+  prevUpdateTime =0;
 
   x_ = 0;
   rot_ = 0;
@@ -192,7 +196,7 @@ void DiffDrivePlugin6W::Reset()
 }
 
 // Update the controller
-void DiffDrivePlugin6W::Update()
+void DiffDrivePlugin6W::OnUpdate(const gazebo::common::UpdateInfo &info)
 {
   // TODO: Step should be in a parameter of this function
   double d1, d2;
@@ -202,8 +206,8 @@ void DiffDrivePlugin6W::Update()
   GetPositionCmd();
 
   //stepTime = World::Instance()->GetPhysicsEngine()->GetStepTime();
-  stepTime = world->GetSimTime() - prevUpdateTime;
-  prevUpdateTime = world->GetSimTime();
+  stepTime = info.simTime - prevUpdateTime;
+  prevUpdateTime = info.simTime;
 
   // Distance travelled by front wheels
   d1 = stepTime.Double() * wheelDiam / 2 * joints[MID_LEFT]->GetVelocity(0);
@@ -232,13 +236,13 @@ void DiffDrivePlugin6W::Update()
     joints[MID_RIGHT]->SetVelocity(0, wheelSpeed[1] / (wheelDiam / 2.0));
     joints[REAR_RIGHT]->SetVelocity(0, wheelSpeed[1] / (wheelDiam / 2.0));
 
-    joints[FRONT_LEFT]->SetMaxForce(0, torque);
-    joints[MID_LEFT]->SetMaxForce(0, torque);
-    joints[REAR_LEFT]->SetMaxForce(0, torque);
+    joints[FRONT_LEFT]->SetParam ( "fmax",0,torque);
+    joints[MID_LEFT]->SetParam ( "fmax",0,torque);
+    joints[REAR_LEFT]->SetParam ( "fmax",0,torque);
 
-    joints[FRONT_RIGHT]->SetMaxForce(0, torque);
-    joints[MID_RIGHT]->SetMaxForce(0, torque);
-    joints[REAR_RIGHT]->SetMaxForce(0, torque);
+    joints[FRONT_RIGHT]->SetParam ( "fmax",0,torque);
+    joints[MID_RIGHT]->SetParam ( "fmax",0,torque);
+    joints[REAR_RIGHT]->SetParam ( "fmax",0,torque);
   }
 
   //publish_odometry();
@@ -295,18 +299,18 @@ void DiffDrivePlugin6W::QueueThread()
 }
 
 // NEW: Update this to publish odometry topic
-void DiffDrivePlugin6W::publish_odometry()
+void DiffDrivePlugin6W::publish_odometry(const gazebo::common::UpdateInfo &info)
 {
   // get current time
-  ros::Time current_time_((world->GetSimTime()).sec, (world->GetSimTime()).nsec); 
+  ros::Time current_time_((info.simTime).sec, (info.simTime).nsec); 
 
   // getting data for base_footprint to odom transform
-  math::Pose pose = link->GetWorldPose();
-  math::Vector3 velocity = link->GetWorldLinearVel();
-  math::Vector3 angular_velocity = link->GetWorldAngularVel();
+  ignition::math::Pose3d pose = link->WorldPose();
+  ignition::math::Vector3d velocity = link->WorldLinearVel();
+  ignition::math::Vector3d angular_velocity = link->WorldAngularVel();
 
-  tf::Quaternion qt(pose.rot.x, pose.rot.y, pose.rot.z, pose.rot.w);
-  tf::Vector3 vt(pose.pos.x, pose.pos.y, pose.pos.z);
+  tf::Quaternion qt(pose.Rot().X(), pose.Rot().Y(), pose.Rot().Z(), pose.Rot().W());
+  tf::Vector3 vt(pose.Pos().X(), pose.Pos().Y(), pose.Pos().Z());
   tf::Transform base_footprint_to_odom(qt, vt);
 
   transform_broadcaster_->sendTransform(tf::StampedTransform(base_footprint_to_odom,
@@ -315,17 +319,17 @@ void DiffDrivePlugin6W::publish_odometry()
                                                             "base_footprint"));
 
   // publish odom topic
-  odom_.pose.pose.position.x = pose.pos.x;
-  odom_.pose.pose.position.y = pose.pos.y;
+  odom_.pose.pose.position.x = pose.Pos().X();
+  odom_.pose.pose.position.y = pose.Pos().Y();
 
-  odom_.pose.pose.orientation.x = pose.rot.x;
-  odom_.pose.pose.orientation.y = pose.rot.y;
-  odom_.pose.pose.orientation.z = pose.rot.z;
-  odom_.pose.pose.orientation.w = pose.rot.w;
+  odom_.pose.pose.orientation.x = pose.Rot().X();
+  odom_.pose.pose.orientation.y = pose.Rot().Y();
+  odom_.pose.pose.orientation.z = pose.Rot().Z();
+  odom_.pose.pose.orientation.w = pose.Rot().W();
 
-  odom_.twist.twist.linear.x = velocity.x;
-  odom_.twist.twist.linear.y = velocity.y;
-  odom_.twist.twist.angular.z = angular_velocity.z;
+  odom_.twist.twist.linear.x = velocity.X();
+  odom_.twist.twist.linear.y = velocity.Y();
+  odom_.twist.twist.angular.z = angular_velocity.Z();
 
   odom_.header.frame_id = tf::resolve(tf_prefix_, "odom");
   odom_.child_frame_id = "base_footprint";

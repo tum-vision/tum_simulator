@@ -55,8 +55,8 @@
 //=================================================================================================
 
 #include <hector_gazebo_plugins/gazebo_ros_imu.h>
-#include "common/Events.hh"
-#include "physics/physics.hh"
+#include "gazebo/common/Events.hh"
+#include "gazebo/physics/physics.hh"
 
 namespace gazebo
 {
@@ -77,7 +77,7 @@ GazeboRosIMU::GazeboRosIMU()
 // Destructor
 GazeboRosIMU::~GazeboRosIMU()
 {
-  event::Events::DisconnectWorldUpdateStart(updateConnection);
+
 
   node_handle_->shutdown();
 #ifdef USE_CBQ
@@ -97,7 +97,7 @@ void GazeboRosIMU::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
   if (!_sdf->HasElement("robotNamespace"))
     robotNamespace.clear();
   else
-    robotNamespace = _sdf->GetElement("robotNamespace")->GetValueString() + "/";
+    robotNamespace = _sdf->GetElement("robotNamespace")->Get<std::string>() + "/";
 
   if (!_sdf->HasElement("bodyName"))
   {
@@ -105,8 +105,9 @@ void GazeboRosIMU::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
     linkName = link->GetName();
   }
   else {
-    linkName = _sdf->GetElement("bodyName")->GetValueString();
-    link = boost::shared_dynamic_cast<physics::Link>(world->GetEntity(linkName));
+    linkName = _sdf->GetElement("bodyName")->Get<std::string>();
+    ROS_ERROR("CALLED FROM GAZEBO_ROS_IMU.CPP,CHANGED BY SURAJ MAY CAUSE ERRORS");
+    link = _model->GetLink(linkName);
   }
 
   // assert that the body by linkName exists
@@ -117,23 +118,23 @@ void GazeboRosIMU::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
   }
 
   double update_rate = 0.0;
-  if (_sdf->HasElement("updateRate")) update_rate = _sdf->GetElement("updateRate")->GetValueDouble();
+  if (_sdf->HasElement("updateRate")) update_rate = _sdf->GetElement("updateRate")->Get<double>();
   update_period = update_rate > 0.0 ? 1.0/update_rate : 0.0;
 
   if (!_sdf->HasElement("frameId"))
     frameId = linkName;
   else
-    frameId = _sdf->GetElement("frameId")->GetValueString();
+    frameId = _sdf->GetElement("frameId")->Get<std::string>();
 
   if (!_sdf->HasElement("topicName"))
     topicName = "imu";
   else
-    topicName = _sdf->GetElement("topicName")->GetValueString();
+    topicName = _sdf->GetElement("topicName")->Get<std::string>();
 
   if (!_sdf->HasElement("serviceName"))
     serviceName = topicName + "/calibrate";
   else
-    serviceName = _sdf->GetElement("serviceName")->GetValueString();
+    serviceName = _sdf->GetElement("serviceName")->Get<std::string>();
 
   accelModel.Load(_sdf, "accel");
   rateModel.Load(_sdf, "rate");
@@ -141,28 +142,22 @@ void GazeboRosIMU::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
 
   // also use old configuration variables from gazebo_ros_imu
   if (_sdf->HasElement("gaussianNoise")) {
-    double gaussianNoise = _sdf->GetElement("gaussianNoise")->GetValueDouble();
+    double gaussianNoise = _sdf->GetElement("gaussianNoise")->Get<double>();
     if (gaussianNoise != 0.0) {
       accelModel.gaussian_noise = gaussianNoise;
       rateModel.gaussian_noise  = gaussianNoise;
     }
   }
 
-  if (_sdf->HasElement("rpyOffset")) {
-    sdf::Vector3 sdfVec = _sdf->GetElement("rpyOffset")->GetValueVector3();
-    math::Vector3 rpyOffset = math::Vector3(sdfVec.x, sdfVec.y, sdfVec.z);
-    if (accelModel.offset.y == 0.0 && rpyOffset.x != 0.0) accelModel.offset.y = -rpyOffset.x * 9.8065;
-    if (accelModel.offset.x == 0.0 && rpyOffset.y != 0.0) accelModel.offset.x =  rpyOffset.y * 9.8065;
-    if (headingModel.offset == 0.0 && rpyOffset.z != 0.0) headingModel.offset =  rpyOffset.z;
-  }
+  
 
   // fill in constant covariance matrix
-  imuMsg.angular_velocity_covariance[0] = rateModel.gaussian_noise.x*rateModel.gaussian_noise.x;
-  imuMsg.angular_velocity_covariance[4] = rateModel.gaussian_noise.y*rateModel.gaussian_noise.y;
-  imuMsg.angular_velocity_covariance[8] = rateModel.gaussian_noise.z*rateModel.gaussian_noise.z;
-  imuMsg.linear_acceleration_covariance[0] = accelModel.gaussian_noise.x*accelModel.gaussian_noise.x;
-  imuMsg.linear_acceleration_covariance[4] = accelModel.gaussian_noise.y*accelModel.gaussian_noise.y;
-  imuMsg.linear_acceleration_covariance[8] = accelModel.gaussian_noise.z*accelModel.gaussian_noise.z;
+  imuMsg.angular_velocity_covariance[0] = rateModel.gaussian_noise.X()*rateModel.gaussian_noise.X();
+  imuMsg.angular_velocity_covariance[4] = rateModel.gaussian_noise.Y()*rateModel.gaussian_noise.Y();
+  imuMsg.angular_velocity_covariance[8] = rateModel.gaussian_noise.Z()*rateModel.gaussian_noise.Z();
+  imuMsg.linear_acceleration_covariance[0] = accelModel.gaussian_noise.X()*accelModel.gaussian_noise.X();
+  imuMsg.linear_acceleration_covariance[4] = accelModel.gaussian_noise.Y()*accelModel.gaussian_noise.Y();
+  imuMsg.linear_acceleration_covariance[8] = accelModel.gaussian_noise.Z()*accelModel.gaussian_noise.Z();
 
   // start ros node
   if (!ros::isInitialized())
@@ -199,14 +194,17 @@ void GazeboRosIMU::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
   // New Mechanism for Updating every World Cycle
   // Listen to the update event. This event is broadcast every
   // simulation iteration.
-  updateConnection = event::Events::ConnectWorldUpdateBegin(
-      boost::bind(&GazeboRosIMU::Update, this));
+  // updateConnection = event::Events::ConnectWorldUpdateBegin(
+      //boost::bind(&GazeboRosIMU::Update, this));
+
+    updateConnection = gazebo::event::Events::ConnectWorldUpdateBegin(
+        boost::bind(&GazeboRosIMU::OnUpdate, this, _1));
 }
 
 void GazeboRosIMU::Reset()
 {
-  last_time = world->GetSimTime();
-  orientation = math::Quaternion();
+  last_time = 0;
+  orientation = ignition::math::Quaterniond();
   velocity = 0.0;
   accel = 0.0;
 
@@ -228,51 +226,51 @@ bool GazeboRosIMU::ServiceCallback(std_srvs::Empty::Request &req,
 bool GazeboRosIMU::SetAccelBiasCallback(cvg_sim_gazebo_plugins::SetBias::Request &req, cvg_sim_gazebo_plugins::SetBias::Response &res)
 {
   boost::mutex::scoped_lock scoped_lock(lock);
-  accelModel.reset(math::Vector3(req.bias.x, req.bias.y, req.bias.z));
+  accelModel.reset(ignition::math::Vector3d(req.bias.x, req.bias.y, req.bias.z));
   return true;
 }
 
 bool GazeboRosIMU::SetRateBiasCallback(cvg_sim_gazebo_plugins::SetBias::Request &req, cvg_sim_gazebo_plugins::SetBias::Response &res)
 {
   boost::mutex::scoped_lock scoped_lock(lock);
-  rateModel.reset(math::Vector3(req.bias.x, req.bias.y, req.bias.z));
+  rateModel.reset(ignition::math::Vector3d(req.bias.x, req.bias.y, req.bias.z));
   return true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // Update the controller
-void GazeboRosIMU::Update()
+void GazeboRosIMU::OnUpdate(const gazebo::common::UpdateInfo &info)
 {
   // Get Time Difference dt
-  common::Time cur_time = world->GetSimTime();
+  common::Time cur_time = info.simTime;
   double dt = (cur_time - last_time).Double();
   if (last_time + update_period > cur_time) return;
 
   boost::mutex::scoped_lock scoped_lock(lock);
 
   // Get Pose/Orientation
-  math::Pose pose = link->GetWorldPose();
+  ignition::math::Pose3d pose = link->WorldPose();
 
   // get Acceleration and Angular Rates
   // the result of GetRelativeLinearAccel() seems to be unreliable (sum of forces added during the current simulation step)?
   //accel = myBody->GetRelativeLinearAccel(); // get acceleration in body frame
-  math::Vector3 temp = link->GetWorldLinearVel(); // get velocity in world frame
-  accel = pose.rot.RotateVectorReverse((temp - velocity) / dt);
+  ignition::math::Vector3d temp = link->WorldLinearVel(); // get velocity in world frame
+  accel = pose.Rot().RotateVectorReverse((temp - velocity) / dt);
   velocity = temp;
 
   // GetRelativeAngularVel() sometimes return nan?
   //rate  = link->GetRelativeAngularVel(); // get angular rate in body frame
-  math::Quaternion delta = pose.rot - orientation;
-  orientation = pose.rot;
-  rate.x = 2.0 * (-orientation.x * delta.w + orientation.w * delta.x + orientation.z * delta.y - orientation.y * delta.z) / dt;
-  rate.y = 2.0 * (-orientation.y * delta.w - orientation.z * delta.x + orientation.w * delta.y + orientation.x * delta.z) / dt;
-  rate.z = 2.0 * (-orientation.z * delta.w + orientation.y * delta.x - orientation.x * delta.y + orientation.w * delta.z) / dt;
+  ignition::math::Quaterniond delta = pose.Rot() - orientation;
+  orientation = pose.Rot();
+  rate.X() = 2.0 * (-orientation.X() * delta.W() + orientation.W() * delta.X() + orientation.Z() * delta.Y() - orientation.Y() * delta.Z()) / dt;
+  rate.Y() = 2.0 * (-orientation.Y() * delta.W() - orientation.Z() * delta.X() + orientation.W() * delta.Y() + orientation.X() * delta.Z()) / dt;
+  rate.Z() = 2.0 * (-orientation.Z() * delta.W() + orientation.Y() * delta.X() - orientation.X() * delta.Y() + orientation.W() * delta.Z()) / dt;
 
   // get Gravity
-  gravity       = world->GetPhysicsEngine()->GetGravity();
+  gravity       = world->Gravity();
   gravity_body  = orientation.RotateVectorReverse(gravity);
-  double gravity_length = gravity.GetLength();
-  ROS_DEBUG_NAMED("hector_gazebo_ros_imu", "gravity_world = [%g %g %g]", gravity.x, gravity.y, gravity.z);
+  double gravity_length = gravity.Length();
+  ROS_DEBUG_NAMED("hector_gazebo_ros_imu", "gravity_world = [%g %g %g]", gravity.X(), gravity.Y(), gravity.Z());
 
   // add gravity vector to body acceleration
   accel = accel - gravity_body;
@@ -282,18 +280,18 @@ void GazeboRosIMU::Update()
   rate  = rate  + rateModel.update(dt);
   headingModel.update(dt);
   ROS_DEBUG_NAMED("hector_gazebo_ros_imu", "Current errors: accel = [%g %g %g], rate = [%g %g %g], heading = %g",
-                 accelModel.getCurrentError().x, accelModel.getCurrentError().y, accelModel.getCurrentError().z,
-                 rateModel.getCurrentError().x, rateModel.getCurrentError().y, rateModel.getCurrentError().z,
+                 accelModel.getCurrentError().X(), accelModel.getCurrentError().Y(), accelModel.getCurrentError().Z(),
+                 rateModel.getCurrentError().X(), rateModel.getCurrentError().Y(), rateModel.getCurrentError().Z(),
                  headingModel.getCurrentError());
 
   // apply offset error to orientation (pseudo AHRS)
-  double normalization_constant = (gravity_body + accelModel.getCurrentError()).GetLength() * gravity_body.GetLength();
+  double normalization_constant = (gravity_body + accelModel.getCurrentError()).Length() * gravity_body.Length();
   double cos_alpha = (gravity_body + accelModel.getCurrentError()).Dot(gravity_body)/normalization_constant;
-  math::Vector3 normal_vector(gravity_body.Cross(accelModel.getCurrentError()));
+  ignition::math::Vector3d normal_vector(gravity_body.Cross(accelModel.getCurrentError()));
   normal_vector *= sqrt((1 - cos_alpha)/2)/normalization_constant;
-  math::Quaternion attitudeError(sqrt((1 + cos_alpha)/2), normal_vector.x, normal_vector.y, normal_vector.z);
-  math::Quaternion headingError(cos(headingModel.getCurrentError()/2),0,0,sin(headingModel.getCurrentError()/2));
-  pose.rot = attitudeError * pose.rot * headingError;
+  ignition::math::Quaterniond attitudeError(sqrt((1 + cos_alpha)/2), normal_vector.X(), normal_vector.Y(), normal_vector.Z());
+  ignition::math::Quaterniond headingError(cos(headingModel.getCurrentError()/2),0,0,sin(headingModel.getCurrentError()/2));
+  pose.Rot()=attitudeError * pose.Rot() * headingError;
 
   // copy data into pose message
   imuMsg.header.frame_id = frameId;
@@ -301,26 +299,26 @@ void GazeboRosIMU::Update()
   imuMsg.header.stamp.nsec = cur_time.nsec;
 
   // orientation quaternion
-  imuMsg.orientation.x = pose.rot.x;
-  imuMsg.orientation.y = pose.rot.y;
-  imuMsg.orientation.z = pose.rot.z;
-  imuMsg.orientation.w = pose.rot.w;
+  imuMsg.orientation.x = pose.Rot().X();
+  imuMsg.orientation.y = pose.Rot().Y();
+  imuMsg.orientation.z = pose.Rot().Z();
+  imuMsg.orientation.w = pose.Rot().W();
 
   // pass angular rates
-  imuMsg.angular_velocity.x    = rate.x;
-  imuMsg.angular_velocity.y    = rate.y;
-  imuMsg.angular_velocity.z    = rate.z;
+  imuMsg.angular_velocity.x    = rate.X();
+  imuMsg.angular_velocity.y    = rate.Y();
+  imuMsg.angular_velocity.z    = rate.Z();
 
   // pass accelerations
-  imuMsg.linear_acceleration.x    = accel.x;
-  imuMsg.linear_acceleration.y    = accel.y;
-  imuMsg.linear_acceleration.z    = accel.z;
+  imuMsg.linear_acceleration.x    = accel.X();
+  imuMsg.linear_acceleration.y    = accel.Y();
+  imuMsg.linear_acceleration.z    = accel.Z();
 
   // fill in covariance matrix
   imuMsg.orientation_covariance[8] = headingModel.gaussian_noise*headingModel.gaussian_noise;
   if (gravity_length > 0.0) {
-    imuMsg.orientation_covariance[0] = accelModel.gaussian_noise.x*accelModel.gaussian_noise.x/(gravity_length*gravity_length);
-    imuMsg.orientation_covariance[4] = accelModel.gaussian_noise.y*accelModel.gaussian_noise.y/(gravity_length*gravity_length);
+    imuMsg.orientation_covariance[0] = accelModel.gaussian_noise.X()*accelModel.gaussian_noise.X()/(gravity_length*gravity_length);
+    imuMsg.orientation_covariance[4] = accelModel.gaussian_noise.Y()*accelModel.gaussian_noise.Y()/(gravity_length*gravity_length);
   } else {
     imuMsg.orientation_covariance[0] = -1;
     imuMsg.orientation_covariance[4] = -1;
@@ -339,7 +337,7 @@ void GazeboRosIMU::Update()
     debugPose.pose.orientation.x = imuMsg.orientation.x;
     debugPose.pose.orientation.y = imuMsg.orientation.y;
     debugPose.pose.orientation.z = imuMsg.orientation.z;
-    math::Pose pose = link->GetWorldPose();
+    ignition::math::Pose3d pose = link->WorldPose();
     debugPose.pose.position.x = pose.pos.x;
     debugPose.pose.position.y = pose.pos.y;
     debugPose.pose.position.z = pose.pos.z;

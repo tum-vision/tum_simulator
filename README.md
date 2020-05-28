@@ -1,5 +1,4 @@
-## tum_simulator ported to Melodic
-=============
+## tum_simulator ported to Ros Melodic and Gazebo 9
 The original code was written in hydro which can be found here :
 https://github.com/tum-vision/tum_simulator.git
 This is a ros melodic version of the code.

@@ -27,9 +27,14 @@
 //=================================================================================================
 
 #include <hector_gazebo_plugins/gazebo_ros_sonar.h>
-#include "common/Events.hh"
-#include "physics/physics.hh"
-#include "sensors/RaySensor.hh"
+#include "gazebo/common/Events.hh"
+#include "gazebo/physics/physics.hh"
+#include "gazebo/sensors/RaySensor.hh"
+#include <gazebo/sensors/sensors.hh>
+
+#include <string>
+
+#include <gazebo/gazebo.hh>
 
 #include <limits>
 
@@ -44,7 +49,7 @@ GazeboRosSonar::GazeboRosSonar()
 GazeboRosSonar::~GazeboRosSonar()
 {
   sensor_->SetActive(false);
-  event::Events::DisconnectWorldUpdateStart(updateConnection);
+
   node_handle_->shutdown();
   delete node_handle_;
 }
@@ -54,7 +59,8 @@ GazeboRosSonar::~GazeboRosSonar()
 void GazeboRosSonar::Load(sensors::SensorPtr _sensor, sdf::ElementPtr _sdf)
 {
   // Get then name of the parent sensor
-  sensor_ = boost::shared_dynamic_cast<sensors::RaySensor>(_sensor);
+  //sensor_  =  std::dynamic_pointer_cast<sensors::RaySensorPtr>(_sensor);
+  sensor_ = std::dynamic_pointer_cast<sensors::RaySensor>(_sensor);
   if (!sensor_)
   {
     gzthrow("GazeboRosSonar requires a Ray Sensor as its parent");
@@ -62,32 +68,32 @@ void GazeboRosSonar::Load(sensors::SensorPtr _sensor, sdf::ElementPtr _sdf)
   }
 
   // Get the world name.
-  std::string worldName = sensor_->GetWorldName();
+  std::string worldName = sensor_->WorldName();
   world = physics::get_world(worldName);
 
   // load parameters
   if (!_sdf->HasElement("robotNamespace"))
     namespace_.clear();
   else
-    namespace_ = _sdf->GetElement("robotNamespace")->GetValueString() + "/";
+    namespace_ = _sdf->GetElement("robotNamespace")->Get<std::string>() + "/";
 
   if (!_sdf->HasElement("frameId"))
     frame_id_ = "";
   else
-    frame_id_ = _sdf->GetElement("frameId")->GetValueString();
+    frame_id_ = _sdf->GetElement("frameId")->Get<std::string>();
 
   if (!_sdf->HasElement("topicName"))
     topic_ = "sonar";
   else
-    topic_ = _sdf->GetElement("topicName")->GetValueString();
+    topic_ = _sdf->GetElement("topicName")->Get<std::string>();
 
   sensor_model_.Load(_sdf);
 
   range_.header.frame_id = frame_id_;
   range_.radiation_type = sensor_msgs::Range::ULTRASOUND;
-  range_.field_of_view = std::min(fabs((sensor_->GetAngleMax() - sensor_->GetAngleMin()).Radian()), fabs((sensor_->GetVerticalAngleMax() - sensor_->GetVerticalAngleMin()).Radian()));
-  range_.max_range = sensor_->GetRangeMax();
-  range_.min_range = sensor_->GetRangeMin();
+  range_.field_of_view = std::min(fabs((sensor_->AngleMax() - sensor_->AngleMin()).Radian()), fabs((sensor_->VerticalAngleMax() - sensor_->VerticalAngleMin()).Radian()));
+  range_.max_range = sensor_->RangeMax();
+  range_.min_range = sensor_->RangeMin();
 
   // start ros node
   if (!ros::isInitialized())
@@ -101,8 +107,11 @@ void GazeboRosSonar::Load(sensors::SensorPtr _sensor, sdf::ElementPtr _sdf)
   publisher_ = node_handle_->advertise<sensor_msgs::Range>(topic_, 1);
 
   Reset();
-  updateConnection = sensor_->GetLaserShape()->ConnectNewLaserScans(
-        boost::bind(&GazeboRosSonar::Update, this));
+  //updateConnection = sensor_->GetLaserShape()->ConnectNewLaserScans(
+  //      boost::bind(&GazeboRosSonar::Update, this));
+  
+  updateConnection = gazebo::event::Events::ConnectWorldUpdateBegin(
+        boost::bind(&GazeboRosSonar::OnUpdate, this, _1));
 
   // activate RaySensor
   sensor_->SetActive(true);
@@ -115,23 +124,23 @@ void GazeboRosSonar::Reset()
 
 ////////////////////////////////////////////////////////////////////////////////
 // Update the controller
-void GazeboRosSonar::Update()
+void GazeboRosSonar::OnUpdate(const gazebo::common::UpdateInfo &info)
 {
-  common::Time sim_time = world->GetSimTime();
+  common::Time sim_time = info.simTime;
   double dt = (sim_time - last_time).Double();
 //  if (last_time + updatePeriod > sim_time) return;
 
   // activate RaySensor if it is not yet active
   if (!sensor_->IsActive()) sensor_->SetActive(true);
 
-  range_.header.stamp.sec  = (world->GetSimTime()).sec;
-  range_.header.stamp.nsec = (world->GetSimTime()).nsec;
+  range_.header.stamp.sec  = (info.simTime).sec;
+  range_.header.stamp.nsec = (info.simTime).nsec;
 
   // find ray with minimal range
   range_.range = std::numeric_limits<sensor_msgs::Range::_range_type>::max();
-  int num_ranges = sensor_->GetLaserShape()->GetSampleCount() * sensor_->GetLaserShape()->GetVerticalSampleCount();
+  int num_ranges = sensor_->LaserShape()->GetSampleCount() * sensor_->LaserShape()->GetVerticalSampleCount();
   for(int i = 0; i < num_ranges; ++i) {
-    double ray = sensor_->GetLaserShape()->GetRange(i);
+    double ray = sensor_->LaserShape()->GetRange(i);
     if (ray < range_.range) range_.range = ray;
   }
 

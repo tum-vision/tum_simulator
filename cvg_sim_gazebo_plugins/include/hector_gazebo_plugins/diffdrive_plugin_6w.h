@@ -27,14 +27,16 @@
 
 #include <map>
 
-#include "common/Plugin.hh"
-#include "common/Time.hh"
-//#include "physics/physics.h"
+#include "gazebo/common/Plugin.hh"
+#include "gazebo/common/Time.hh"
+//#include "gazebo/physics/physics.h"
 //#include "transport/TransportTypes.hh"
 //#include "msgs/MessageTypes.hh"
-//#include "common/Time.hh"
-//#include "common/Events.hh"
-
+//#include "gazebo/common/Time.hh"
+//#include "gazebo/common/Events.hh"
+#include "gazebo/common/Events.hh"
+#include "gazebo/physics/physics.hh"
+//#include <physics/physics.hh>
 // ROS 
 #include <ros/ros.h>
 #include <tf/transform_broadcaster.h>
@@ -50,6 +52,7 @@
 #include <boost/thread.hpp>
 #include <boost/bind.hpp>
 
+
 namespace gazebo
 {
 
@@ -63,10 +66,10 @@ public:
 protected:
   virtual void Load(physics::ModelPtr _model, sdf::ElementPtr _sdf);
   virtual void Reset();
-  virtual void Update();
+  virtual void OnUpdate(const gazebo::common::UpdateInfo &info);
 
 private:
-  void publish_odometry();
+  void publish_odometry(const gazebo::common::UpdateInfo &info);
   void GetPositionCmd();
 
   physics::LinkPtr link;

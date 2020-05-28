@@ -27,8 +27,9 @@
 //=================================================================================================
 
 #include <hector_gazebo_plugins/gazebo_ros_magnetic.h>
-#include "common/Events.hh"
-#include "physics/physics.hh"
+#include "gazebo/common/Events.hh"
+#include "gazebo/physics/physics.hh"
+#include <ignition/math/Vector3.hh>
 
 static const double DEFAULT_MAGNITUDE           = 1.0;
 static const double DEFAULT_REFERENCE_HEADING   = 0.0;
@@ -45,7 +46,7 @@ GazeboRosMagnetic::GazeboRosMagnetic()
 // Destructor
 GazeboRosMagnetic::~GazeboRosMagnetic()
 {
-  event::Events::DisconnectWorldUpdateStart(updateConnection);
+
 
   node_handle_->shutdown();
   delete node_handle_;
@@ -61,12 +62,12 @@ void GazeboRosMagnetic::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
   if (!_sdf->HasElement("robotNamespace"))
     namespace_.clear();
   else
-    namespace_ = _sdf->GetElement("robotNamespace")->GetValueString() + "/";
+    namespace_ = _sdf->GetElement("robotNamespace")->Get<std::string>() + "/";
 
   if (!_sdf->HasElement("topicName"))
     topic_ = "magnetic";
   else
-    topic_ = _sdf->GetElement("topicName")->GetValueString();
+    topic_ = _sdf->GetElement("topicName")->Get<std::string>();
 
   if (!_sdf->HasElement("bodyName"))
   {
@@ -74,8 +75,8 @@ void GazeboRosMagnetic::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
     link_name_ = link->GetName();
   }
   else {
-    link_name_ = _sdf->GetElement("bodyName")->GetValueString();
-    link = boost::shared_dynamic_cast<physics::Link>(world->GetEntity(link_name_));
+    link_name_ = _sdf->GetElement("bodyName")->Get<std::string>();
+    link = _model->GetLink(link_name_);
   }
 
   if (!link)
@@ -85,39 +86,39 @@ void GazeboRosMagnetic::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
   }
 
   double update_rate = 0.0;
-  if (_sdf->HasElement("updateRate")) update_rate = _sdf->GetElement("updateRate")->GetValueDouble();
+  if (_sdf->HasElement("updateRate")) update_rate = _sdf->GetElement("updateRate")->Get<double>();
   update_period = update_rate > 0.0 ? 1.0/update_rate : 0.0;
 
   if (!_sdf->HasElement("frameId"))
     frame_id_ = link_name_;
   else
-    frame_id_ = _sdf->GetElement("frameId")->GetValueString();
+    frame_id_ = _sdf->GetElement("frameId")->Get<std::string>();
 
   if (!_sdf->HasElement("magnitude"))
     magnitude_ = DEFAULT_MAGNITUDE;
   else
-    magnitude_ = _sdf->GetElement("magnitude")->GetValueDouble();
+    magnitude_ = _sdf->GetElement("magnitude")->Get<double>();
 
   if (!_sdf->HasElement("referenceHeading"))
     reference_heading_ = DEFAULT_REFERENCE_HEADING * M_PI/180.0;
   else
-    reference_heading_ = _sdf->GetElement("referenceHeading")->GetValueDouble() * M_PI/180.0;
+    reference_heading_ = _sdf->GetElement("referenceHeading")->Get<double>() * M_PI/180.0;
 
   if (!_sdf->HasElement("declination"))
     declination_ = DEFAULT_DECLINATION * M_PI/180.0;
   else
-    declination_ = _sdf->GetElement("declination")->GetValueDouble() * M_PI/180.0;
+    declination_ = _sdf->GetElement("declination")->Get<double>() * M_PI/180.0;
 
   if (!_sdf->HasElement("inclination"))
     inclination_ = DEFAULT_INCLINATION * M_PI/180.0;
   else
-    inclination_ = _sdf->GetElement("inclination")->GetValueDouble() * M_PI/180.0;
+    inclination_ = _sdf->GetElement("inclination")->Get<double>() * M_PI/180.0;
 
   // Note: Gazebo uses NorthWestUp coordinate system, heading and declination are compass headings
   magnetic_field_.header.frame_id = frame_id_;
-  magnetic_field_world_.x = magnitude_ *  cos(inclination_) * cos(reference_heading_ - declination_);
-  magnetic_field_world_.y = magnitude_ *  sin(reference_heading_ - declination_);
-  magnetic_field_world_.z = magnitude_ * -sin(inclination_) * cos(reference_heading_ - declination_);
+  magnetic_field_world_.X(magnitude_ *  cos(inclination_) * cos(reference_heading_ - declination_));
+  magnetic_field_world_.Y(magnitude_ *  sin(reference_heading_ - declination_));
+  magnetic_field_world_.Z(magnitude_ * -sin(inclination_) * cos(reference_heading_ - declination_));
 
   sensor_model_.Load(_sdf);
 
@@ -137,9 +138,12 @@ void GazeboRosMagnetic::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
   // New Mechanism for Updating every World Cycle
   // Listen to the update event. This event is broadcast every
   // simulation iteration.
-  updateConnection = event::Events::ConnectWorldUpdateBegin(
-      boost::bind(&GazeboRosMagnetic::Update, this));
+  // updateConnection = event::Events::ConnectWorldUpdateBegin(
+     // boost::bind(&GazeboRosMagnetic::Update, this));
+    updateConnection = gazebo::event::Events::ConnectWorldUpdateBegin(
+        boost::bind(&GazeboRosMagnetic::OnUpdate, this, _1));
 }
+
 
 void GazeboRosMagnetic::Reset()
 {
@@ -148,19 +152,19 @@ void GazeboRosMagnetic::Reset()
 
 ////////////////////////////////////////////////////////////////////////////////
 // Update the controller
-void GazeboRosMagnetic::Update()
+void GazeboRosMagnetic::OnUpdate(const gazebo::common::UpdateInfo &info)
 {
-  common::Time sim_time = world->GetSimTime();
+  common::Time sim_time = info.simTime;
   double dt = (sim_time - last_time).Double();
   if (last_time + update_period > sim_time) return;
 
-  math::Pose pose = link->GetWorldPose();
-  math::Vector3 field = sensor_model_(pose.rot.RotateVectorReverse(magnetic_field_world_), dt);
+  ignition::math::Pose3d pose = link->WorldPose();
+  ignition::math::Vector3d field = sensor_model_(pose.Rot().RotateVectorReverse(magnetic_field_world_), dt);
 
   magnetic_field_.header.stamp = ros::Time(sim_time.sec, sim_time.nsec);
-  magnetic_field_.vector.x = field.x;
-  magnetic_field_.vector.y = field.y;
-  magnetic_field_.vector.z = field.z;
+  magnetic_field_.vector.x = field.X();
+  magnetic_field_.vector.y = field.Y();
+  magnetic_field_.vector.z = field.Z();
 
   publisher_.publish(magnetic_field_);
 

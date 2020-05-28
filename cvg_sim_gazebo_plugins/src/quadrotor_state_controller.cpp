@@ -13,8 +13,8 @@
 
 
 #include <hector_quadrotor_controller/quadrotor_state_controller.h>
-#include "common/Events.hh"
-#include "physics/physics.hh"
+#include "gazebo/common/Events.hh"
+#include "gazebo/physics/physics.hh"
 
 #include <cmath>
 
@@ -36,7 +36,7 @@ GazeboQuadrotorStateController::GazeboQuadrotorStateController()
 // Destructor
 GazeboQuadrotorStateController::~GazeboQuadrotorStateController()
 {
-  event::Events::DisconnectWorldUpdateStart(updateConnection);
+
 
   node_handle_->shutdown();
   delete node_handle_;
@@ -52,47 +52,47 @@ void GazeboQuadrotorStateController::Load(physics::ModelPtr _model, sdf::Element
   if (!_sdf->HasElement("robotNamespace"))
     namespace_.clear();
   else
-    namespace_ = _sdf->GetElement("robotNamespace")->GetValueString() + "/";
+    namespace_ = _sdf->GetElement("robotNamespace")->Get<std::string>() + "/";
 
   if (!_sdf->HasElement("topicName"))
     velocity_topic_ = "cmd_vel";
   else
-    velocity_topic_ = _sdf->GetElement("topicName")->GetValueString();
+    velocity_topic_ = _sdf->GetElement("topicName")->Get<std::string>();
 
   if (!_sdf->HasElement("takeoffTopic"))
     takeoff_topic_ = "/ardrone/takeoff";
   else
-    takeoff_topic_ = _sdf->GetElement("takeoffTopic")->GetValueString();
+    takeoff_topic_ = _sdf->GetElement("takeoffTopic")->Get<std::string>();
 
   if (!_sdf->HasElement("/ardrone/land"))
     land_topic_ = "/ardrone/land";
   else
-    land_topic_ = _sdf->GetElement("landTopic")->GetValueString();
+    land_topic_ = _sdf->GetElement("landTopic")->Get<std::string>();
 
   if (!_sdf->HasElement("resetTopic"))
     reset_topic_ = "/ardrone/reset";
   else
-    reset_topic_ = _sdf->GetElement("resetTopic")->GetValueString();
+    reset_topic_ = _sdf->GetElement("resetTopic")->Get<std::string>();
 
   if (!_sdf->HasElement("navdataTopic"))
     navdata_topic_ = "/ardrone/navdata";
   else
-    navdata_topic_ = _sdf->GetElement("navdataTopic")->GetValueString();
+    navdata_topic_ = _sdf->GetElement("navdataTopic")->Get<std::string>();
 
   if (!_sdf->HasElement("imuTopic"))
     imu_topic_.clear();
   else
-    imu_topic_ = _sdf->GetElement("imuTopic")->GetValueString();
+    imu_topic_ = _sdf->GetElement("imuTopic")->Get<std::string>();
 
   if (!_sdf->HasElement("sonarTopic"))
     sonar_topic_.clear();
   else
-    sonar_topic_ = _sdf->GetElement("sonarTopic")->GetValueString();
+    sonar_topic_ = _sdf->GetElement("sonarTopic")->Get<std::string>();
 
   if (!_sdf->HasElement("stateTopic"))
     state_topic_.clear();
   else
-    state_topic_ = _sdf->GetElement("stateTopic")->GetValueString();
+    state_topic_ = _sdf->GetElement("stateTopic")->Get<std::string>();
 
   if (!_sdf->HasElement("bodyName"))
   {
@@ -100,8 +100,8 @@ void GazeboQuadrotorStateController::Load(physics::ModelPtr _model, sdf::Element
     link_name_ = link->GetName();
   }
   else {
-    link_name_ = _sdf->GetElement("bodyName")->GetValueString();
-    link = boost::shared_dynamic_cast<physics::Link>(world->GetEntity(link_name_));
+    link_name_ = _sdf->GetElement("bodyName")->Get<std::string>();
+    link = _model->GetLink(link_name_);
   }
 
   if (!link)
@@ -264,9 +264,9 @@ void GazeboQuadrotorStateController::VelocityCallback(const geometry_msgs::Twist
 
 void GazeboQuadrotorStateController::ImuCallback(const sensor_msgs::ImuConstPtr& imu)
 {
-  pose.rot.Set(imu->orientation.w, imu->orientation.x, imu->orientation.y, imu->orientation.z);
-  euler = pose.rot.GetAsEuler();
-  angular_velocity = pose.rot.RotateVector(math::Vector3(imu->angular_velocity.x, imu->angular_velocity.y, imu->angular_velocity.z));
+  pose.Rot().Set(imu->orientation.w, imu->orientation.x, imu->orientation.y, imu->orientation.z);
+  euler = pose.Rot().Euler();
+  angular_velocity = pose.Rot().RotateVector(ignition::math::Vector3d(imu->angular_velocity.x, imu->angular_velocity.y, imu->angular_velocity.z));
 }
 
 void GazeboQuadrotorStateController::SonarCallback(const sensor_msgs::RangeConstPtr& sonar_info)
@@ -277,12 +277,12 @@ void GazeboQuadrotorStateController::SonarCallback(const sensor_msgs::RangeConst
 
 void GazeboQuadrotorStateController::StateCallback(const nav_msgs::OdometryConstPtr& state)
 {
-  math::Vector3 velocity1(velocity);
+  ignition::math::Vector3d velocity1(velocity);
 
   if (imu_topic_.empty()) {
-    pose.pos.Set(state->pose.pose.position.x, state->pose.pose.position.y, state->pose.pose.position.z);
-    pose.rot.Set(state->pose.pose.orientation.w, state->pose.pose.orientation.x, state->pose.pose.orientation.y, state->pose.pose.orientation.z);
-    euler = pose.rot.GetAsEuler();
+    pose.Pos().Set(state->pose.pose.position.x, state->pose.pose.position.y, state->pose.pose.position.z);
+    pose.Rot().Set(state->pose.pose.orientation.w, state->pose.pose.orientation.x, state->pose.pose.orientation.y, state->pose.pose.orientation.z);
+    euler = pose.Rot().Euler();
     angular_velocity.Set(state->twist.twist.angular.x, state->twist.twist.angular.y, state->twist.twist.angular.z);
   }
 
@@ -302,33 +302,33 @@ void GazeboQuadrotorStateController::StateCallback(const nav_msgs::OdometryConst
 // Update the controller
 void GazeboQuadrotorStateController::Update()
 {
-  math::Vector3 force, torque;
+  ignition::math::Vector3d force, torque;
 
   // Get new commands/state
   callback_queue_.callAvailable();
 
   // Get simulator time
-  common::Time sim_time = world->GetSimTime();
+  common::Time sim_time = world->SimTime();
   double dt = (sim_time - last_time).Double();
   // Update rate is 200/per second
   if (dt < 0.005) return;
 
   // Get Pose/Orientation from Gazebo (if no state subscriber is active)
   if (imu_topic_.empty()) {
-    pose = link->GetWorldPose();
-    angular_velocity = link->GetWorldAngularVel();
-    euler = pose.rot.GetAsEuler();
+    pose = link->WorldPose();
+    angular_velocity = link->WorldAngularVel();
+    euler = pose.Rot().Euler();
   }
   if (state_topic_.empty()) {
-    acceleration = (link->GetWorldLinearVel() - velocity) / dt;
-    velocity = link->GetWorldLinearVel();
+    acceleration = (link->WorldLinearVel() - velocity) / dt;
+    velocity = link->WorldLinearVel();
   }
 
   // Rotate vectors to coordinate frames relevant for control
-  math::Quaternion heading_quaternion(cos(euler.z/2),0,0,sin(euler.z/2));
-  math::Vector3 velocity_xy = heading_quaternion.RotateVectorReverse(velocity);
-  math::Vector3 acceleration_xy = heading_quaternion.RotateVectorReverse(acceleration);
-  math::Vector3 angular_velocity_body = pose.rot.RotateVectorReverse(angular_velocity);
+  ignition::math::Quaterniond heading_quaternion(cos(euler.Z()/2),0,0,sin(euler.Z()/2));
+  ignition::math::Vector3d velocity_xy = heading_quaternion.RotateVectorReverse(velocity);
+  ignition::math::Vector3d acceleration_xy = heading_quaternion.RotateVectorReverse(acceleration);
+  ignition::math::Vector3d angular_velocity_body = pose.Rot().RotateVectorReverse(angular_velocity);
 
   // process robot operation information
   if((m_takeoff)&&(robot_current_state == LANDED_MODEL))
@@ -402,19 +402,19 @@ void GazeboQuadrotorStateController::Update()
 
   ardrone_autonomy::Navdata navdata;
   navdata.batteryPercent = m_batteryPercentage;
-  navdata.rotX = pose.rot.GetRoll() / M_PI * 180.;
-  navdata.rotY = pose.rot.GetPitch() / M_PI * 180.;
-  navdata.rotZ = pose.rot.GetYaw() / M_PI * 180.;
+  navdata.rotX = pose.Rot().Roll() / M_PI * 180.;
+  navdata.rotY = pose.Rot().Pitch() / M_PI * 180.;
+  navdata.rotZ = pose.Rot().Yaw() / M_PI * 180.;
   if (!sonar_topic_.empty())
     navdata.altd = int(robot_altitude*1000);
   else
-    navdata.altd = pose.pos.z * 1000.f;
-  navdata.vx = 1000*velocity_xy.x;
-  navdata.vy = 1000*velocity_xy.y;
-  navdata.vz = 1000*velocity_xy.z;
-  navdata.ax = acceleration_xy.x/10;
-  navdata.ay = acceleration_xy.y/10;
-  navdata.az = acceleration_xy.z/10 + 1;
+    navdata.altd = pose.Pos().Z() * 1000.f;
+  navdata.vx = 1000*velocity_xy.X();
+  navdata.vy = 1000*velocity_xy.Y();
+  navdata.vz = 1000*velocity_xy.Z();
+  navdata.ax = acceleration_xy.X()/10;
+  navdata.ay = acceleration_xy.Y()/10;
+  navdata.az = acceleration_xy.Z()/10 + 1;
   navdata.tm = ros::Time::now().toSec()*1000000; // FIXME what is the real drone sending here?
 
 
